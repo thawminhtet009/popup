@@ -1,0 +1,154 @@
+<style>
+.vip-wrapper {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+}
+.vip-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: gold;
+  margin-bottom: 8px;
+}
+.vip-subtitle {
+  text-align: center;
+  opacity: 0.85;
+  margin-bottom: 25px;
+}
+.plan {
+  background: #111;
+  border-radius: 22px;
+  padding: 25px 20px;
+  margin-bottom: 25px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(255,0,0,0.2);
+}
+.plan.gold {
+  border: 2px solid gold;
+}
+.plan .badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: gold;
+  color: #000;
+  padding: 6px 14px;
+  border-radius: 0 22px 0 22px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.plan h3 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.plan .price {
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: gold;
+  margin-bottom: 15px;
+}
+.plan ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+.plan ul li {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+.plan ul li::before {
+  content: "✨ ";
+  color: red;
+}
+.plan button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #ff0000, #b30000);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.payment-box {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+.telegram-btn {
+  margin-top: 15px;
+  display: block;
+  text-align: center;
+  padding: 12px;
+  background: linear-gradient(45deg, #ff0000, #b30000);
+  border-radius: 40px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+</style>
+
+<div class="vip-wrapper">
+  <div class="vip-title">VIP Member ဝင်ရန်</div>
+  <div class="vip-subtitle">စိတ်ကြိုက်ရွေးချယ်ပြီး ဝင်ရောက်နိုင်ပါသည်</div>
+
+  <!-- 1 လ -->
+  <div class="plan">
+    <h3>၁ လ</h3>
+    <div class="price">3,500 Ks</div>
+    <ul>
+      <li>Ads-Free ဝင်ရောက်မှု</li>
+      <li>High Quality အရည်အသွေး</li>
+      <li>နေ့စဉ် Update များ</li>
+    </ul>
+    <button onclick="goTelegram('1 လ - 3,500 Ks')">အခုဝယ်ယူပါ</button>
+  </div>
+
+  <!-- ၃ လ -->
+  <div class="plan">
+    <h3>၃ လ</h3>
+    <div class="price">8,000 Ks</div>
+    <ul>
+      <li>၁ လထက် စျေးသက်သာ</li>
+      <li>VIP မြန်နှုန်းမြင့် Server</li>
+      <li>ကြည့်ရှုခြင်း အကန့်အသတ်မရှိ</li>
+    </ul>
+    <button onclick="goTelegram('3 လ - 8,000 Ks')">အခုဝယ်ယူပါ</button>
+  </div>
+
+  <!-- ၆ လ (Best Value) -->
+  <div class="plan gold">
+    <div class="badge">အကောင်းဆုံး</div>
+    <h3>၆ လ (Best Value)</h3>
+    <div class="price">15,000 Ks</div>
+    <ul>
+      <li>၁ လ ၂ လ ထက် စျေးသက်သာ</li>
+      <li>VIP Exclusive Content များ</li>
+      <li>၂၄ နာရီ Support ဝန်ဆောင်မှု</li>
+      <li>Unlimited Access</li>
+    </ul>
+    <button onclick="goTelegram('6 လ - 15,000 Ks')">VIP Member ဝင်ပါ</button>
+  </div>
+
+  <div class="payment-box">
+    Payment: KPay / Wave Money <br>
+    Pyae Phyo Aung - 09794758316
+  </div>
+
+  <a class="telegram-btn" href="https://t.me/yourtelegramusername" target="_blank">Telegram</a>
+</div>
+
+<script>
+function goTelegram(plan) {
+  const tg = "https://t.me/yourtelegramusername";
+  const msg = encodeURIComponent("VIP Member ဝင်ချင်ပါတယ်\nPackage: " + plan);
+  window.open(tg + "?text=" + msg, "_blank");
+}
+</script>
