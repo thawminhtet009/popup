@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="my">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kawaii VIP ENT - Official Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        :root {
+            --bg: #030305; --card: rgba(255, 255, 255, 0.02); --gold: #ffb700;
+            --cyan: #00f2fe; --green: #00f2ad; --red: #ff4d4d;
+            --text: #ffffff; --border: rgba(255, 255, 255, 0.06);
+        }
+
+        body { 
+            background: linear-gradient(-45deg, #030305, #0a0a1a, #030305, #120515);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text); padding: 15px; overflow-x: hidden; 
+            user-select: none; -webkit-user-select: none;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans Myanmar', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .container { max-width: 600px; margin: 0 auto; animation: fadeIn 1.2s ease; padding-bottom: 60px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        header { text-align: center; margin: 30px 0; }
+        .logo { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; text-transform: uppercase; }
+        .logo span { color: var(--gold); text-shadow: 0 0 15px rgba(255, 183, 0, 0.4); }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .card { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(0, 242, 254, 0.2); padding: 25px 15px; border-radius: 20px; text-align: center; backdrop-filter: blur(10px); }
+        .price { font-size: 2rem; font-weight: 800; margin: 8px 0; font-family: 'Montserrat'; }
+        .price span { font-size: 12px; color: var(--gold); }
+        .no-ads { display: block; font-size: 10px; color: #666; margin-top: 8px; font-weight: 700; }
+
+        .admin-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 25px; text-align: center; }
+        .admin-btn { background: linear-gradient(135deg, #0088cc, #00ccff); color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; border-radius: 15px; font-weight: 800; font-size: 14px; }
+
+        .payment-card { background: #fff; color: #000; border-radius: 25px; padding: 20px; text-align: center; margin-bottom: 30px; position: relative; }
+        .pay-num { font-family: 'Montserrat'; font-size: 25px; font-weight: 800; display: block; }
+        .pay-name { font-size: 12px; font-weight: 700; color: #333; }
+        
+        .status-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; margin-top: 8px; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
+        .status-online { background: rgba(0, 242, 173, 0.1); color: #00a878; }
+        .status-closed { background: rgba(255, 77, 77, 0.1); color: #d63031; }
+        .dot { height: 7px; width: 7px; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+        .dot-online { background-color: #00a878; }
+        .dot-closed { background-color: #d63031; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .copy-btn { background: #000; color: #fff; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: 800; cursor: pointer; margin-top: 10px; }
+
+        .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 25px; position: relative; overflow: hidden; transition: 0.3s; }
+        .form-card.glow-border { border: 2px solid var(--cyan); box-shadow: 0 0 20px rgba(0, 242, 254, 0.4); animation: borderGlow 2.5s infinite; }
+        @keyframes borderGlow { 0%, 100% { border-color: var(--cyan); } 50% { border-color: var(--gold); } }
+
+        .input-group { margin-bottom: 18px; position: relative; }
+        .input-group label { display: block; font-size: 10px; color: #555; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
+        
+        input, select { width: 100%; height: 52px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 15px; color: #fff; padding: 0 15px; outline: none; transition: 0.3s; }
+        input:focus, select:focus { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0, 242, 254, 0.3); background: rgba(0, 242, 254, 0.05); }
+        
+        .toggle-pass { position: absolute; right: 15px; bottom: 17px; color: #555; cursor: pointer; z-index: 10; }
+
+        .coupon-info { margin-top: 10px; display: none; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-align: center; }
+        .coupon-valid { background: rgba(0, 242, 173, 0.1); color: var(--green); border: 1px solid rgba(0, 242, 173, 0.3); }
+        .coupon-invalid { background: rgba(255, 77, 77, 0.1); color: var(--red); border: 1px solid rgba(255, 77, 77, 0.3); }
+        #timer-display { font-family: 'Montserrat'; display: block; font-size: 12px; margin-top: 4px; color: #fff; }
+
+        #preview-box { margin-top: 10px; display: none; text-align: center; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); }
+        #preview-img { max-width: 100%; height: 120px; object-fit: contain; background: #000; padding: 5px; }
+        
+        .plan-price-info { font-size: 13px; font-weight: 800; color: var(--gold); margin-top: 5px; display: block; text-align: right; }
+        
+        #toast { visibility: hidden; background-color: #222; color: #fff; text-align: center; border-radius: 10px; padding: 10px 20px; position: fixed; z-index: 5000; left: 50%; bottom: 60px; transform: translateX(-50%); font-size: 11px; font-weight: 700; }
+        #toast.show { visibility: visible; animation: fadeInUp 0.4s, fadeOut 0.4s 2.6s; }
+
+        .btn-submit { background: var(--cyan); color: #000; width: 100%; height: 55px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-submit:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); padding: 20px; }
+        .spinner { border: 4px solid #111; border-top: 4px solid var(--cyan); width: 40px; height: 40px; border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 15px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .glass-receipt { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 30px; padding: 30px 20px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border-top: 4px solid var(--green); }
+        
+        .receipt-id-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 15px 0; }
+        .receipt-id { background: var(--green); color: #000; padding: 5px 15px; border-radius: 10px; font-family: 'Montserrat'; font-weight: 800; font-size: 14px; }
+        .copy-id-btn { background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+
+        .receipt-info { text-align: left; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; }
+        .receipt-row span:first-child { color: #666; font-weight: 800; }
+        .receipt-row span:last-child { color: #fff; font-weight: 700; }
+        .est-time { font-size: 10px; color: var(--gold); background: rgba(255, 183, 0, 0.1); padding: 8px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--gold); display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+        /* History List Styles */
+        .history-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-top: 25px; }
+        .history-title { font-size: 12px; font-weight: 800; color: var(--cyan); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .order-item { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid var(--cyan); display: flex; justify-content: space-between; align-items: center; }
+        .order-info { font-size: 11px; }
+        .order-id-tag { font-family: 'Montserrat'; font-weight: 800; color: #fff; display: block; }
+        .expiry-tag { font-size: 9px; color: var(--gold); margin-top: 3px; display: block; }
+        .copy-history-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+    </style>
+</head>
+
+<body oncontextmenu="return false;"> 
+    <div id="toast">COPIED ✅</div>
+
+    <div id="overlay">
+        <div style="text-align: center;" id="loading-ui">
+            <div class="spinner"></div>
+            <p style="font-weight: 800; color: #fff; font-size: 11px; letter-spacing: 2px;">SENDING ORDER...</p>
+        </div>
+        
+        <div class="glass-receipt" style="display:none;" id="success-ui">
+            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_yupe9pda.json" background="transparent" speed="1" style="width: 100px; height: 100px; margin: 0 auto;" autoplay></lottie-player>
+            <h2 style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 10px;">ORDER PLACED!</h2>
+            
+            <div class="receipt-id-wrapper">
+                <div class="receipt-id" id="display-order-id">#KW-0000</div>
+                <button class="copy-id-btn" onclick="copyOrderID()"><i class="fa-regular fa-copy"></i></button>
+            </div>
+
+            <div class="est-time"><i class="fa-regular fa-clock"></i> စောင့်ဆိုင်းချိန်: ၁၅ မိနစ် ~ ၃၀ မိနစ်</div>
+            <div class="receipt-info">
+                <div class="receipt-row"><span>CUSTOMER</span><span id="res-name">---</span></div>
+                <div class="receipt-row"><span>PLAN</span><span id="res-plan">---</span></div>
+                <div class="receipt-row"><span>STATUS</span><span style="color: var(--gold);">PENDING</span></div>
+            </div>
+            <button onclick="location.reload()" style="background:#fff; color:#000; padding:15px; border-radius:15px; font-weight:800; border:none; cursor:pointer; width: 100%;">DONE</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header><div class="logo">KAWAII <span>VIP</span> ENT</div></header>
+        
+        <div class="grid">
+            <div class="card"><div class="price">4,000<span>Ks</span></div><div style="font-size: 11px; font-weight: 800; color: var(--green);">၁ လ သက်တမ်း</div><span class="no-ads">✨ NO ADS</span></div>
+            <div class="card" style="border-color: var(--gold);"><div class="price">10,000<span>Ks</span></div><div style="font-size: 11px; font-weight: 800; color: var(--gold);">၃ လ သက်တမ်း</div><span class="no-ads">✨ NO ADS</span></div>
+        </div>
+        
+        <div class="admin-box" style="border: 1px solid var(--cyan); background: rgba(0, 242, 254, 0.05);">
+            <label style="font-size: 10px; font-weight: 800; color: var(--cyan); display: block; margin-bottom: 10px;">CHECK ORDER STATUS</label>
+            <div style="display: flex; gap: 10px; padding: 0 10px;">
+                <input type="text" id="checkOrderID" placeholder="#KW-0000" style="height: 45px; flex: 1; font-size: 13px;">
+                <button onclick="fetchOrderStatus()" style="background: var(--cyan); color: #000; border: none; padding: 0 15px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 11px;">CHECK</button>
+            </div>
+            <p id="statusResult" style="margin-top: 12px; font-size: 12px; font-weight: 800; min-height: 18px;"></p>
+        </div>
+
+        <div class="history-box" id="historyBox" style="display:none; margin-bottom: 25px;">
+            <div class="history-title"><i class="fa-solid fa-clock-rotate-left"></i> YOUR ORDER HISTORY</div>
+            <div id="orderList"></div>
+        </div>
+
+        <div class="admin-notice" style="background: rgba(255, 77, 77, 0.03); border: 1px solid rgba(255, 77, 77, 0.2); border-radius: 20px; padding: 15px; margin-bottom: 25px; border-left: 4px solid var(--red);">
+            <div class="notice-title" style="font-size: 13px; font-weight: 800; color: var(--red); margin-bottom: 5px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-circle-exclamation"></i> Admin သတိပေးချက်</div>
+            <div class="notice-text" style="font-size: 11px; color: #aaa; line-height: 1.6;">- ငွေလွှဲပြေစာ (Slip) အမှန်ကိုသာ ပေးပို့ပါ။ အကောင့်မရမချင်း စောင့်ပါ။<br>- VIP အကောင့်ကို Telegram မှ တစ်ဆင့် ပို့ပေးပါမည်။</div>
+        </div>
+        <div class="admin-box"><a href="https://t.me/thawminhtet" target="_blank" class="admin-btn"><i class="fa-brands fa-telegram"></i> CONTACT ADMIN</a></div>
+        
+        <div class="payment-card">
+            <span class="pay-num">09973775192</span>
+            <p class="pay-name">Zar Soe La Min Thar (KPay/Wave)</p>
+            <div id="status-area"></div>
+            <button class="copy-btn" onclick="copyNum()">COPY NUMBER</button>
+        </div>
+
+        <div class="form-card" id="formCard">
+            <form id="orderForm">
+                <div class="input-group"><label>Name</label><input type="text" id="name" placeholder="သင့်အမည်"></div>
+                <div class="input-group"><label>Password</label><input type="password" id="pass" placeholder="Min 6 digits"><i class="fa-solid fa-eye-slash toggle-pass" onclick="togglePass()"></i></div>
+                <div class="input-group">
+                    <label>Coupon Code</label>
+                    <input type="text" id="coupon" placeholder="VIPNEW" oninput="handleCoupon()">
+                    <div id="coupon-box" class="coupon-info">
+                        <span id="coupon-msg"></span>
+                        <span id="timer-display"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Plan</label>
+                    <select id="plan" onchange="updateFormBorder()">
+                        <option value="၁ လ">၁ လ - 4,000 Ks</option>
+                        <option value="၃ လ" selected>၃ လ - 10,000 Ks</option>
+                    </select>
+                    <span id="price-tag" class="plan-price-info">Total: 10,000 Ks</span>
+                </div>
+                <div class="input-group">
+                    <label>Slip Screenshot</label>
+                    <input type="file" id="file" accept="image/*" onchange="previewFile()" style="padding-top:14px;">
+                    <div id="preview-box"><img id="preview-img" src="" alt="Preview"></div>
+                </div>
+                <button type="button" class="btn-submit" id="submit-btn" onclick="sendOrder()">CONFIRM ORDER</button>
+                <p id="closed-msg" style="display:none; color:var(--red); font-size:11px; text-align:center; margin-top:10px; font-weight:800;">လက်ရှိတွင် ဆိုင်ပိတ်ထားသဖြင့် ဝယ်ယူ၍မရနိုင်ပါ။</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const BOT_TOKEN = "8724430257:AAEaD2LiI-8plYwnPQpslnj9idBtsr_dbSk";
+        const CHAT_ID = "1846575486";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyHcq1mHadqGlanxQZmWykeNovMX2oDcg7P7NXqGQ2fflB8gMo9Q6ekozjFLZ-muASt/exec";
+        
+        const EXPIRY_TIME = new Date("2026-06-15T23:59:59").getTime(); 
+        let timerInterval;
+
+        $(document).ready(function() { 
+            updateShopStatus(); 
+            updateFormBorder(); 
+            displayOrderHistory();
+            setInterval(updateShopStatus, 60000); 
+            setInterval(displayOrderHistory, 60000); // Live update expiry tags every min
+        });
+
+        function updateShopStatus() {
+            const h = new Date().getHours();
+            if (h >= 21 || h < 9) {
+                $('#status-area').html('<div class="status-badge status-closed"><span class="dot dot-closed"></span> Closed</div>');
+                $('#submit-btn').prop('disabled', true).text("SHOP CLOSED"); $('#closed-msg').show();
+            } else {
+                $('#status-area').html('<div class="status-badge status-online"><span class="dot dot-online"></span> Online</div>');
+                $('#submit-btn').prop('disabled', false).text("CONFIRM ORDER"); $('#closed-msg').hide();
+            }
+        }
+
+        // --- History Logic ---
+        function saveOrderToLocal(orderID, plan) {
+            let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
+            const date = new Date();
+            const months = plan.includes("၁") ? 1 : 3;
+            const expiryDate = new Date(date.setMonth(date.getMonth() + months)).getTime();
+            orders.push({ id: orderID, plan: plan, expiry: expiryDate });
+            localStorage.setItem('kawaii_orders', JSON.stringify(orders));
+            displayOrderHistory();
+        }
+
+        function displayOrderHistory() {
+            const orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
+            if (orders.length === 0) return;
+            $('#historyBox').show();
+            let html = '';
+            const now = new Date().getTime();
+            [...orders].reverse().forEach(order => {
+                const timeLeft = order.expiry - now;
+                let expiryText = timeLeft <= 0 ? "❌ EXPIRED" : `⏳ Ends in: ${Math.floor(timeLeft / (1000 * 60 * 60 * 24))} Days`;
+                html += `<div class="order-item">
+                            <div class="order-info">
+                                <span class="order-id-tag">${order.id}</span>
+                                <span class="expiry-tag">${order.plan} Plan - ${expiryText}</span>
+                            </div>
+                            <button class="copy-history-btn" onclick="copyHistoryText('${order.id}')"><i class="fa-regular fa-copy"></i> COPY</button>
+                         </div>`;
+            });
+            $('#orderList').html(html);
+        }
+
+        function copyHistoryText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const x = document.getElementById("toast");
+                x.innerText = "ID COPIED ✅"; x.className = "show";
+                setTimeout(() => x.className = "", 3000);
+            });
+        }
+        // ---------------------
+
+        function handleCoupon() {
+            const code = $('#coupon').val().trim().toUpperCase();
+            clearInterval(timerInterval);
+            if (code === "") { $('#coupon-box').hide(); updateFormBorder(); return; }
+            if (code === "VIPNEW") {
+                $('#coupon-box').show().removeClass('coupon-invalid').addClass('coupon-valid');
+                $('#coupon-msg').text("✅ COUPON APPLIED: 10% OFF");
+                startTimer();
+                updateFormBorder(true);
+            } else {
+                $('#coupon-box').show().removeClass('coupon-valid').addClass('coupon-invalid');
+                $('#coupon-msg').text("❌ INVALID CODE");
+                $('#timer-display').text("");
+                updateFormBorder(false);
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const diff = EXPIRY_TIME - now;
+                if (diff <= 0) {
+                    clearInterval(timerInterval);
+                    $('#coupon-msg').text("⚠️ COUPON EXPIRED");
+                    $('#timer-display').text("");
+                    updateFormBorder(false);
+                } else {
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    $('#timer-display').text(`Ends in: ${d}d ${h}h ${m}m ${s}s`);
+                }
+            }, 1000);
+        }
+
+        async function fetchOrderStatus() {
+            let id = $('#checkOrderID').val().trim().toUpperCase();
+            if (!id) return alert("Order ID ရိုက်ထည့်ပါ။");
+            if (!id.startsWith("#KW-")) {
+                id = id.startsWith("KW-") ? "#" + id : "#KW-" + id;
+            }
+            $('#statusResult').text("Checking...").css('color', '#aaa');
+            try {
+                const res = await fetch(`${WEB_APP_URL}?orderID=${encodeURIComponent(id)}`);
+                const status = await res.text();
+                if (status === "Not Found") {
+                    $('#statusResult').text("❌ Order ID မတွေ့ပါ။").css('color', 'var(--red)');
+                } else {
+                    $('#statusResult').text(`STATUS: ${status}`).css('color', status.includes("Approved") ? 'var(--green)' : 'var(--gold)');
+                }
+            } catch (e) { $('#statusResult').text("❌ Connection Error!").css('color', 'var(--red)'); }
+        }
+
+        async function sendOrder() {
+            const name = $('#name').val().trim(), pass = $('#pass').val().trim(), file = document.getElementById('file').files[0];
+            if (!name || !pass || !file) return alert("အချက်အလက်စုံအောင်ဖြည့်ပါ။");
+            const orderID = "#KW-" + Math.floor(1000 + Math.random() * 9000);
+            $('#overlay').fadeIn().css('display', 'flex');
+            try {
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID); fd.append('photo', file);
+                fd.append('caption', `💎 NEW ORDER (${orderID})\n👤 Name: ${name}\n🔑 Pass: ${pass}\n📦 Plan: ${$('#plan').val()}\n🎟 Coupon: ${$('#coupon').val() || 'None'}`);
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ action: "newOrder", orderID: orderID, name: name, plan: $('#plan').val() })
+                });
+                saveOrderToLocal(orderID, $('#plan').val());
+                $('#display-order-id').text(orderID); $('#res-name').text(name); $('#res-plan').text($('#plan').val());
+                $('#loading-ui').hide(); $('#success-ui').show();
+            } catch (e) { alert("Error!"); $('#overlay').fadeOut(); }
+        }
+
+        function copyOrderID() {
+            const id = $('#display-order-id').text();
+            navigator.clipboard.writeText(id).then(() => {
+                const x = document.getElementById("toast");
+                x.innerText = "ORDER ID COPIED ✅"; x.className = "show";
+                setTimeout(() => x.className = "", 3000);
+            });
+        }
+
+        function copyNum() {
+            navigator.clipboard.writeText('09973775192').then(() => {
+                const x = document.getElementById("toast"); x.className = "show"; setTimeout(() => x.className = "", 3000);
+            });
+        }
+
+        function updateFormBorder(isDiscount = false) {
+            const plan = $('#plan').val();
+            let basePrice = (plan === "၁ လ") ? 4000 : 10000;
+            if (isDiscount) basePrice = basePrice * 0.9;
+            if (plan === "၁ လ") $('#formCard').removeClass('glow-border'); else $('#formCard').addClass('glow-border');
+            $('#price-tag').text(`Total: ${basePrice.toLocaleString()} Ks`);
+        }
+
+        function previewFile() {
+            const file = document.getElementById('file').files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => { $('#preview-img').attr('src', reader.result); $('#preview-box').fadeIn(); }
+            if (file) reader.readAsDataURL(file);
+        }
+
+        function togglePass() { const p = document.getElementById('pass'); p.type = (p.type === "password") ? "text" : "password"; }
+    </script>
+</body>
+</html>
