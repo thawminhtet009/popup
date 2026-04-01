@@ -6,46 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kawaii VIP ENT - Official Premium</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&family=Montserrat:wght@800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+Myanmar:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
         :root {
-            --bg: #030305;
-            --card: rgba(255, 255, 255, 0.02);
-            --gold: #ffb700;
-            --cyan: #00f2fe;
-            --green: #00f2ad;
-            --red: #ff4d4d;
-            --text: #ffffff;
-            --border: rgba(255, 255, 255, 0.06);
-        }
-
-        body {
-            background: linear-gradient(-45deg, #030305, #0a0a1a, #030305, #120515);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: var(--text);
-            padding: 15px;
-            overflow-x: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            --nf-red: #e50914;
+            --nf-red-dim: rgba(229, 9, 20, 0.45);
+            --nf-black: #000000;
+            --nf-panel: #141414;
+            --nf-panel2: #1a1a1a;
+            --nf-border: #333333;
+            --nf-text: #ffffff;
+            --nf-muted: #b3b3b3;
+            --nf-dim: #808080;
+            --gold: #e5e5e5;
+            --green: #46d369;
+            --shadow-tile: 0 8px 24px rgba(0, 0, 0, 0.55);
         }
 
         * {
@@ -56,17 +36,209 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .container {
+        body.nf-app {
+            background: var(--nf-black);
+            color: var(--nf-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            padding: 0;
+            padding-bottom: 88px;
+        }
+
+        body.nf-app::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 100% 60% at 50% -10%, rgba(229, 9, 20, 0.22) 0%, transparent 55%),
+                linear-gradient(180deg, #0a0a0a 0%, var(--nf-black) 35%, var(--nf-black) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .nf-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: linear-gradient(180deg, rgba(20, 20, 20, 0.98) 0%, rgba(20, 20, 20, 0.92) 100%);
+            border-bottom: 1px solid var(--nf-border);
+            padding: 10px 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nf-nav-inner {
             max-width: 600px;
             margin: 0 auto;
-            animation: fadeIn 1.2s ease;
-            padding-bottom: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+        }
+
+        .nf-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.85rem;
+            letter-spacing: 0.12em;
+            line-height: 1;
+            color: var(--nf-text);
+        }
+
+        .nf-brand span {
+            color: var(--nf-red);
+        }
+
+        #shop-status-ui {
+            flex-shrink: 0;
+        }
+
+        .nf-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nf-menu-btn {
+            border: 1px solid var(--nf-border);
+            background: #202020;
+            color: var(--nf-text);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-radius: 4px;
+            padding: 7px 10px;
+            cursor: pointer;
+        }
+
+        .nf-menu-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 180px;
+            background: #1a1a1a;
+            border: 1px solid var(--nf-border);
+            border-radius: 6px;
+            box-shadow: var(--shadow-tile);
+            overflow: hidden;
+            display: none;
+            z-index: 950;
+        }
+
+        .nf-menu-panel.show {
+            display: block;
+        }
+
+        .nf-menu-link {
+            display: block;
+            padding: 10px 12px;
+            font-size: 12px;
+            color: var(--nf-text);
+            text-decoration: none;
+            border-bottom: 1px solid #262626;
+        }
+
+        .nf-menu-link:last-child {
+            border-bottom: 0;
+        }
+
+        .nf-menu-link:hover {
+            background: #262626;
+            color: #fff;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .status-online {
+            background: rgba(70, 211, 105, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(70, 211, 105, 0.4);
+        }
+
+        .status-closed {
+            background: rgba(229, 9, 20, 0.12);
+            color: #ff6b6b;
+            border: 1px solid rgba(229, 9, 20, 0.35);
+        }
+
+        .nf-hero {
+            position: relative;
+            z-index: 1;
+            padding: 72px 20px 28px;
+            text-align: center;
+        }
+
+        .nf-hero::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 80px;
+            background: linear-gradient(to top, var(--nf-black), transparent);
+            pointer-events: none;
+        }
+
+        .nf-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .nf-hero-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--nf-red);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 8px;
+        }
+
+        .nf-hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 3.25rem);
+            letter-spacing: 0.08em;
+            line-height: 1.05;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
+        }
+
+        .nf-hero-desc {
+            font-size: 13px;
+            color: var(--nf-muted);
+            line-height: 1.55;
+            font-weight: 600;
+        }
+
+        .container.nf-main {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px 24px;
+            animation: fadeIn 0.7s ease;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(12px);
             }
 
             to {
@@ -75,354 +247,880 @@
             }
         }
 
-        header {
-            text-align: center;
-            margin: 30px 0;
+        .nf-section {
+            margin-bottom: 28px;
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.2rem;
-            text-transform: uppercase;
-        }
-
-        .logo span {
-            color: var(--gold);
-            text-shadow: 0 0 15px rgba(255, 183, 0, 0.4);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            padding: 25px 15px;
-            border-radius: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .price {
-            font-size: 2rem;
-            font-weight: 800;
-            margin: 8px 0;
-            font-family: 'Montserrat';
-        }
-
-        .price span {
-            font-size: 12px;
-            color: var(--gold);
-        }
-
-        .no-ads {
-            display: block;
-            font-size: 10px;
-            color: #666;
-            margin-top: 8px;
+        .nf-row-title {
+            font-size: 15px;
             font-weight: 700;
+            color: var(--nf-text);
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
         }
 
-        .admin-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
+        .nf-row-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 1em;
+            background: var(--nf-red);
+            border-radius: 2px;
+            margin-right: 10px;
+            vertical-align: -0.15em;
         }
 
-        .admin-btn {
-            background: linear-gradient(135deg, #0088cc, #00ccff);
-            color: #fff;
-            text-decoration: none;
+        .nf-story-strip {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(110px, 118px);
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 2px 8px;
+            scroll-snap-type: x proximity;
+            overscroll-behavior-x: contain;
+            scrollbar-width: none;
+        }
+
+        .nf-story-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story-card {
+            position: relative;
+            min-height: 196px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--nf-border);
+            background: linear-gradient(180deg, #1d1d1d 0%, #090909 100%);
+            box-shadow: var(--shadow-tile);
+            scroll-snap-align: start;
+            isolation: isolate;
+            cursor: pointer;
+            transition: transform 0.28s ease, border-color 0.2s ease;
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(0, 0, 0, 0.92) 100%);
+        }
+
+        .story-card > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+
+        .story-card:hover > img {
+            transform: scale(1.06);
+        }
+
+        .story-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.26);
+        }
+
+        .story-avatar-ring {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            padding: 3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff7a18 0%, var(--nf-red) 55%, #7c3aed 100%);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.28);
+            display: none;
+        }
+
+        .story-avatar-ring img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #111;
+            display: block;
+        }
+
+        .story-avatar-ring.plus {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            border-radius: 15px;
+            padding: 0;
+            background: linear-gradient(135deg, var(--nf-red) 0%, #ff7a18 100%);
+            border: 3px solid #111;
+            color: #fff;
+            font-size: 28px;
+            line-height: 1;
+            display: none;
+        }
+
+        .story-badge {
+            position: absolute;
+            top: 14px;
+            right: 12px;
+            z-index: 2;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(8, 8, 8, 0.55);
+            color: #fff;
+            font-size: 9px;
             font-weight: 800;
-            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: none;
+        }
+
+        .story-badge.live {
+            background: var(--nf-red);
+            border-color: rgba(255, 255, 255, 0.18);
+            display: none;
+        }
+
+        .story-content {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 2;
+            padding: 14px 12px 12px;
+        }
+
+        .story-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .story-meta {
+            margin-top: 4px;
+            font-size: 10px;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.72);
+            display: none;
+        }
+
+        .story-hint {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--nf-muted);
+            letter-spacing: 0.02em;
+        }
+
+        .vip-media-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .vip-media-card {
+            background: var(--nf-panel);
+            border: 1px solid var(--nf-border);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: var(--shadow-tile);
+        }
+
+        .vip-media-card img,
+        .vip-media-card video {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            background: #0b0b0b;
+        }
+
+        .vip-media-meta {
+            padding: 10px 12px 12px;
+        }
+
+        .vip-media-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--nf-text);
+            margin-bottom: 4px;
+        }
+
+        .vip-media-desc {
+            font-size: 11px;
+            color: var(--nf-muted);
+            line-height: 1.5;
+        }
+
+        .price-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .price-card {
+            background: var(--nf-panel);
+            border: 1px solid var(--nf-border);
+            border-radius: 4px;
+            padding: 18px 12px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-tile);
+            transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.28s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .price-card:hover,
+        .price-card:focus-visible {
+            transform: scale(1.04);
+            z-index: 2;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75);
+            border-color: #555;
+        }
+
+        .price-card.premium {
+            border-color: var(--nf-red-dim);
+            box-shadow: var(--shadow-tile), 0 0 0 1px rgba(229, 9, 20, 0.25);
+        }
+
+        .price-card.premium:hover {
+            border-color: var(--nf-red);
+        }
+
+        .price-card .plan-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--nf-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .price-card .amount {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.35rem;
+            letter-spacing: 0.04em;
+            margin: 6px 0 4px;
+            line-height: 1;
+        }
+
+        .price-card .amount span {
+            font-family: 'Noto Sans Myanmar', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--nf-red);
+            vertical-align: super;
+            margin-left: 2px;
+        }
+
+        .price-card .plan-meta {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--nf-muted);
+        }
+
+        .price-card.premium .plan-meta {
+            color: var(--nf-text);
+        }
+
+        .price-card.selected {
+            border-color: var(--nf-red);
+            box-shadow: 0 14px 44px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(229, 9, 20, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .price-card.selected .plan-label,
+        .price-card.selected .plan-meta {
+            color: var(--nf-text);
+        }
+
+        .price-card .badge {
+            position: absolute;
+            top: 8px;
+            right: -22px;
+            background: var(--nf-red);
+            color: #fff;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 3px 28px;
+            transform: rotate(45deg);
+            letter-spacing: 0.06em;
+        }
+
+        .history-box {
+            background: var(--nf-panel);
+            border: 1px solid var(--nf-border);
+            border-radius: 4px;
+            padding: 18px;
+            margin-bottom: 0;
+            box-shadow: var(--shadow-tile);
+        }
+
+        .history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            gap: 10px;
+        }
+
+        .history-head-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--nf-text);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .btn-refresh-history {
+            background: var(--nf-text);
+            color: var(--nf-black);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-refresh-history:active {
+            transform: scale(0.97);
+        }
+
+        .order-item {
+            background: var(--nf-panel2);
+            padding: 14px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--nf-red);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .order-main {
+            min-width: 0;
+        }
+
+        .order-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .order-action-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 4px;
+            border: 1px solid var(--nf-border);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--nf-text);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .order-action-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .order-action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .order-action-btn.delete-btn {
+            color: #ff8080;
+            border-color: rgba(229, 9, 20, 0.35);
+        }
+
+        .order-action-btn.restore-btn {
+            color: var(--green);
+            border-color: rgba(70, 211, 105, 0.35);
+        }
+
+        .history-empty {
+            padding: 16px;
+            border-radius: 4px;
+            border: 1px dashed var(--nf-border);
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--nf-muted);
+        }
+
+        .timer-live {
+            font-family: 'Noto Sans Myanmar', sans-serif;
+            color: var(--nf-text);
+            font-weight: 700;
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 6px;
         }
 
         .payment-card {
-            background: #fff;
-            color: #000;
-            border-radius: 25px;
+            background: var(--nf-panel);
+            color: var(--nf-text);
+            border-radius: 4px;
             padding: 20px;
             text-align: center;
-            margin-bottom: 30px;
-            position: relative;
+            border: 1px solid var(--nf-border);
+            border-top: 3px solid var(--nf-red);
+            box-shadow: var(--shadow-tile);
         }
 
-        .pay-num {
-            font-family: 'Montserrat';
-            font-size: 25px;
-            font-weight: 800;
-            display: block;
+        .payment-logos {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            filter: grayscale(0.35) brightness(1.15);
         }
 
-        .pay-name {
-            font-size: 12px;
-            font-weight: 700;
-            color: #333;
+        .payment-logos img {
+            border-radius: 4px;
+            height: 28px;
         }
 
-        .status-badge {
+        .payment-method-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .payment-detail {
+            background: var(--nf-panel2);
+            border: 1px solid var(--nf-border);
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .payment-label {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            min-height: 28px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: rgba(229, 9, 20, 0.14);
+            color: var(--nf-text);
             font-size: 11px;
             font-weight: 800;
-            margin-top: 8px;
-            padding: 4px 12px;
-            border-radius: 20px;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
-        .status-online {
-            background: rgba(0, 242, 173, 0.1);
-            color: #00a878;
+        .payment-qr-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 14px 0 8px;
         }
 
-        .status-closed {
-            background: rgba(255, 77, 77, 0.1);
-            color: #d63031;
+        .payment-detail.no-qr .payment-qr-wrap {
+            display: none;
         }
 
-        .dot {
-            height: 7px;
-            width: 7px;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
+        .payment-qr {
+            width: min(220px, 100%);
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #fff;
+            border-radius: 8px;
+            padding: 8px;
         }
 
-        .dot-online {
-            background-color: #00a878;
-        }
-
-        .dot-closed {
-            background-color: #d63031;
-        }
-
-        @keyframes pulse {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .copy-btn {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
+        .pay-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.75rem;
+            letter-spacing: 0.06em;
+            display: block;
             width: 100%;
-            font-weight: 800;
-            cursor: pointer;
+        }
+
+        .pay-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--nf-muted);
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .payment-note {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--nf-muted);
+            line-height: 1.6;
             margin-top: 10px;
         }
 
+        .copy-btn {
+            background: var(--nf-text);
+            color: var(--nf-black);
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            width: 100%;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .copy-btn:hover {
+            background: #e5e5e5;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.99);
+        }
+
         .form-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 25px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
+            background: var(--nf-panel);
+            border: 1px solid var(--nf-border);
+            border-radius: 4px;
+            padding: 22px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-tile);
         }
 
         .form-card.glow-border {
-            border: 2px solid var(--cyan);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-            animation: borderGlow 2.5s infinite;
-        }
-
-        @keyframes borderGlow {
-
-            0%,
-            100% {
-                border-color: var(--cyan);
-            }
-
-            50% {
-                border-color: var(--gold);
-            }
+            border-color: var(--nf-red-dim);
+            box-shadow: var(--shadow-tile), 0 0 0 1px rgba(229, 9, 20, 0.2);
         }
 
         .input-group {
-            margin-bottom: 18px;
+            margin-bottom: 14px;
             position: relative;
         }
 
         .input-group label {
             display: block;
             font-size: 10px;
-            color: #555;
-            font-weight: 800;
+            color: var(--nf-muted);
+            font-weight: 700;
             margin-bottom: 6px;
             text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         input,
         select {
             width: 100%;
-            height: 52px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            color: #fff;
-            padding: 0 15px;
+            height: 48px;
+            background: var(--nf-panel2);
+            border: 1px solid var(--nf-border);
+            border-radius: 4px;
+            color: var(--nf-text);
+            padding: 0 14px;
             outline: none;
-            transition: 0.3s;
+            font-size: 14px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input::placeholder {
+            color: var(--nf-dim);
         }
 
         input:focus,
         select:focus {
-            border-color: var(--cyan);
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
-            background: rgba(0, 242, 254, 0.05);
+            border-color: var(--nf-red);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
         }
 
-        .toggle-pass {
+        .pass-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-password {
             position: absolute;
-            right: 15px;
-            bottom: 17px;
-            color: #555;
+            right: 14px;
+            color: var(--nf-dim);
             cursor: pointer;
-            z-index: 10;
+            padding: 6px;
         }
 
-        .coupon-info {
-            margin-top: 10px;
-            display: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .coupon-valid {
-            background: rgba(0, 242, 173, 0.1);
-            color: var(--green);
-            border: 1px solid rgba(0, 242, 173, 0.3);
-        }
-
-        .coupon-invalid {
-            background: rgba(255, 77, 77, 0.1);
-            color: var(--red);
-            border: 1px solid rgba(255, 77, 77, 0.3);
-        }
-
-        #timer-display {
-            font-family: 'Montserrat';
-            display: block;
-            font-size: 12px;
+        .coupon-group {
+            display: flex;
+            gap: 8px;
             margin-top: 4px;
-            color: #fff;
         }
 
-        #preview-box {
-            margin-top: 10px;
-            display: none;
-            text-align: center;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+        .coupon-expiry {
+            font-size: 10px;
+            color: var(--nf-muted);
+            margin-top: 6px;
+            letter-spacing: 0.02em;
+            min-height: 16px;
         }
 
-        #preview-img {
-            max-width: 100%;
-            height: 120px;
-            object-fit: contain;
-            background: #000;
-            padding: 5px;
-        }
-
-        .plan-price-info {
-            font-size: 13px;
+        .btn-apply {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--nf-text);
+            border: 1px solid var(--nf-border);
+            padding: 0 16px;
+            border-radius: 4px;
             font-weight: 800;
-            color: var(--gold);
-            margin-top: 5px;
-            display: block;
-            text-align: right;
+            font-size: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
         }
 
-        #toast {
-            visibility: hidden;
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-            border-radius: 10px;
-            padding: 10px 20px;
-            position: fixed;
-            z-index: 5000;
-            left: 50%;
-            bottom: 60px;
-            transform: translateX(-50%);
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        #toast.show {
-            visibility: visible;
-            animation: fadeInUp 0.4s, fadeOut 0.4s 2.6s;
+        .btn-apply:hover {
+            background: rgba(255, 255, 255, 0.22);
         }
 
         .btn-submit {
-            background: var(--cyan);
-            color: #000;
+            background: var(--nf-red);
+            color: #fff;
             width: 100%;
-            height: 55px;
+            height: 52px;
             border: none;
-            border-radius: 15px;
+            border-radius: 4px;
             font-weight: 800;
+            font-size: 13px;
             cursor: pointer;
-            transition: 0.2s;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.35);
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background: #f40612;
+        }
+
+        .btn-submit:not(:disabled):active {
+            transform: scale(0.99);
         }
 
         .btn-submit:disabled {
-            background: #333;
-            color: #666;
+            background: #404040;
+            color: #737373;
             cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #price-display {
+            text-align: right;
+            font-weight: 800;
+            color: var(--nf-text);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        #price-display .strike {
+            text-decoration: line-through;
+            color: var(--nf-dim);
+            font-size: 11px;
+            margin-right: 6px;
+        }
+
+        .faq-section {
+            margin-top: 0;
+        }
+
+        .faq-section .nf-row-title {
+            margin-bottom: 14px;
+        }
+
+        .faq-item {
+            background: var(--nf-panel);
+            border: 1px solid var(--nf-border);
+            border-radius: 4px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 14px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--nf-text);
+        }
+
+        .faq-question i {
+            color: var(--nf-muted);
+            font-size: 11px;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 16px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+            font-size: 12px;
+            color: var(--nf-muted);
+            line-height: 1.65;
+        }
+
+        .faq-item.active .faq-answer {
+            padding-bottom: 14px;
+            max-height: 220px;
         }
 
         #overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0, 0, 0, 0.97);
             z-index: 3000;
             display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             padding: 20px;
         }
 
+        #loading-ui {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+        }
+
         .spinner {
-            border: 4px solid #111;
-            border-top: 4px solid var(--cyan);
-            width: 40px;
-            height: 40px;
+            border: 3px solid #2a2a2a;
+            border-top: 3px solid var(--nf-red);
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            animation: spin 1s infinite linear;
-            margin: 0 auto 15px;
+            animation: spin 0.85s infinite linear;
+            margin: 0 auto 16px;
+        }
+
+        .glass-receipt {
+            background: var(--nf-panel);
+            border: 1px solid var(--nf-border);
+            border-radius: 4px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: var(--shadow-tile);
+        }
+
+        .receipt-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.75rem;
+            letter-spacing: 0.1em;
+            color: var(--nf-text);
+            margin-top: 8px;
+        }
+
+        .receipt-id {
+            background: var(--green);
+            color: #000;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            margin: 16px 0;
+            display: inline-block;
+            font-size: 1.35rem;
+        }
+
+        .receipt-info {
+            text-align: left;
+            background: var(--nf-panel2);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid var(--nf-border);
+            font-size: 12px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .receipt-row span:first-child {
+            color: var(--nf-muted);
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+        }
+
+        .receipt-row span:last-child {
+            color: var(--nf-text);
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .receipt-done {
+            background: var(--nf-text);
+            color: var(--nf-black);
+            padding: 14px;
+            border-radius: 4px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 13px;
+        }
+
+        .receipt-done:hover {
+            background: #e5e5e5;
+        }
+
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            background: var(--nf-text);
+            color: var(--nf-black);
+            padding: 12px 20px;
+            border-radius: 4px;
+            position: fixed;
+            left: 50%;
+            bottom: 72px;
+            transform: translateX(-50%) translateY(8px);
+            z-index: 5000;
+            font-weight: 800;
+            font-size: 11px;
+            text-align: center;
+            box-shadow: var(--shadow-tile);
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         @keyframes spin {
@@ -431,647 +1129,761 @@
             }
         }
 
-        .glass-receipt {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 30px 20px;
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            border-top: 4px solid var(--green);
-        }
-
-        .receipt-id-wrapper {
+        .tg-float {
+            position: fixed;
+            bottom: 22px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            background: #24A1DE;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin: 15px 0;
-        }
-
-        .receipt-id {
-            background: var(--green);
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 10px;
-            font-family: 'Montserrat';
-            font-weight: 800;
-            font-size: 14px;
-        }
-
-        .copy-id-btn {
-            background: rgba(255, 255, 255, 0.1);
             color: #fff;
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
+            font-size: 26px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+            z-index: 850;
             cursor: pointer;
-            font-size: 12px;
+            transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+            text-decoration: none;
+            border: 2px solid rgba(255, 255, 255, 0.12);
         }
 
-        .receipt-info {
-            text-align: left;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .receipt-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 11px;
-        }
-
-        .receipt-row span:first-child {
-            color: #666;
-            font-weight: 800;
-        }
-
-        .receipt-row span:last-child {
+        .tg-float:hover {
+            transform: scale(1.08);
             color: #fff;
-            font-weight: 700;
         }
 
-        .est-time {
-            font-size: 10px;
-            color: var(--gold);
-            background: rgba(255, 183, 0, 0.1);
-            padding: 8px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px dashed var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        /* History List Styles */
-        .history-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 25px;
-        }
-
-        .history-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--cyan);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .order-item {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border-left: 3px solid var(--cyan);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .order-info {
-            font-size: 11px;
-        }
-
-        .order-id-tag {
-            font-family: 'Montserrat';
-            font-weight: 800;
-            color: #fff;
-            display: block;
-        }
-
-        .expiry-tag {
-            font-size: 9px;
-            color: var(--gold);
-            margin-top: 3px;
-            display: block;
-        }
-
-        .copy-history-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        /* Device Mockup Style */
-        .mockup-container {
-            position: relative;
+        .tg-float::after {
+            content: '';
+            position: absolute;
             width: 100%;
-            max-width: 300px;
-            margin: 40px auto;
-            perspective: 1000px;
+            height: 100%;
+            border-radius: 50%;
+            background: #24A1DE;
+            opacity: 0.45;
+            z-index: -1;
+            animation: tg-pulse 2s infinite;
         }
 
-        .phone-frame {
-            background: #111;
-            border: 8px solid #222;
-            border-radius: 35px;
-            padding: 10px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.1);
-            transform: rotateY(-10deg) rotateX(5deg);
-            transition: 0.5s;
+        @keyframes tg-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.45;
+            }
+
+            100% {
+                transform: scale(1.55);
+                opacity: 0;
+            }
         }
 
-        .phone-frame:hover {
-            transform: rotateY(0deg) rotateX(0deg);
-        }
-
-        .phone-screen {
-            background: var(--bg);
-            border-radius: 25px;
-            height: 450px;
-            overflow: hidden;
-            border: 1px solid #333;
-            position: relative;
-        }
-
-        .mockup-content {
-            padding: 20px;
+        .tg-label {
+            position: absolute;
+            right: 68px;
+            background: #2a2a2a;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 4px;
             font-size: 10px;
-            color: #444;
-        }
-
-        .mockup-accent {
-            width: 50px;
-            height: 4px;
-            background: #333;
-            margin: 0 auto 10px;
-            border-radius: 10px;
-        }
-
-        /* FAQ Accordion Style */
-        .faq-section {
-            margin-top: 40px;
-        }
-
-        .faq-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 15px 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        .faq-question:hover {
-            background: rgba(0, 242, 254, 0.05);
-        }
-
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            font-size: 12px;
-            color: #aaa;
-            line-height: 1.6;
-        }
-
-        .faq-item.active .faq-answer {
-            padding-bottom: 15px;
-            max-height: 200px;
-        }
-
-        .faq-item.active i {
-            transform: rotate(180deg);
-            color: var(--cyan);
-        }
-
-        .timer-live {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--cyan);
             font-weight: 800;
-            font-size: 10px;
-            background: rgba(0, 242, 254, 0.1);
-            padding: 2px 8px;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: 0.25s;
+            pointer-events: none;
+            border: 1px solid var(--nf-border);
         }
 
-        .expired-notify {
-            color: var(--red) !important;
+        .tg-float:hover .tg-label {
+            opacity: 1;
         }
     </style>
 </head>
 
-<body oncontextmenu="return false;">
-    <div id="toast">COPIED ✅</div>
+<body oncontextmenu="return false;" class="nf-app">
+    <div id="toast">✅ COPIED</div>
 
     <div id="overlay">
-        <div style="text-align: center;" id="loading-ui">
+        <div id="loading-ui">
             <div class="spinner"></div>
-            <p style="font-weight: 800; color: #fff; font-size: 11px; letter-spacing: 2px;">SENDING ORDER...</p>
+            <p style="font-weight: 800; color: #b3b3b3; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;">Sending order…</p>
         </div>
 
         <div class="glass-receipt" style="display:none;" id="success-ui">
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_yupe9pda.json" background="transparent"
-                speed="1" style="width: 100px; height: 100px; margin: 0 auto;" autoplay></lottie-player>
-            <h2 style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 10px;">ORDER PLACED!</h2>
-
-            <div class="receipt-id-wrapper">
-                <div class="receipt-id" id="display-order-id">#KW-0000</div>
-                <button class="copy-id-btn" onclick="copyOrderID()"><i class="fa-regular fa-copy"></i></button>
-            </div>
-
-            <div class="est-time"><i class="fa-regular fa-clock"></i> စောင့်ဆိုင်းချိန်: ၁၅ မိနစ် ~ ၃၀ မိနစ်</div>
+            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_yupe9pda.json" speed="1"
+                style="width: 96px; height: 96px; margin: 0 auto;" autoplay></lottie-player>
+            <h2 class="receipt-title">ORDER PLACED</h2>
+            <div class="receipt-id" id="display-order-id">#KW-0000</div>
             <div class="receipt-info">
-                <div class="receipt-row"><span>CUSTOMER</span><span id="res-name">---</span></div>
-                <div class="receipt-row"><span>PLAN</span><span id="res-plan">---</span></div>
-                <div class="receipt-row"><span>STATUS</span><span style="color: var(--gold);">PENDING</span></div>
+                <div class="receipt-row"><span>Name</span><span id="res-name">---</span></div>
+                <div class="receipt-row"><span>Plan</span><span id="res-plan">---</span></div>
+                <div class="receipt-row"><span>Payment</span><span id="res-payment">---</span></div>
+                <div class="receipt-row"><span>Status</span><span style="color: var(--nf-red); font-weight: 800;">PENDING</span></div>
             </div>
-            <button onclick="location.reload()"
-                style="background:#fff; color:#000; padding:15px; border-radius:15px; font-weight:800; border:none; cursor:pointer; width: 100%;">DONE</button>
+            <button type="button" class="receipt-done" onclick="location.reload()">Done</button>
         </div>
     </div>
 
-    <div class="container">
-        <header>
-            <div class="logo">KAWAII <span>VIP</span> ENT</div>
-        </header>
-
-        <div class="grid">
-            <div class="card">
-                <div class="price">4,000<span>Ks</span></div>
-                <div style="font-size: 11px; font-weight: 800; color: var(--green);">၁ လ သက်တမ်း</div><span
-                    class="no-ads">✨ NO ADS</span>
+    <nav class="nf-nav" aria-label="Main">
+        <div class="nf-nav-inner">
+            <div class="nf-brand">KAWAII <span>VIP</span></div>
+            <div class="nf-nav-actions">
+                <div id="shop-status-ui"></div>
+                <button type="button" id="menuToggle" class="nf-menu-btn">Menu</button>
             </div>
-            <div class="card" style="border-color: var(--gold);">
-                <div class="price">10,000<span>Ks</span></div>
-                <div style="font-size: 11px; font-weight: 800; color: var(--gold);">၃ လ သက်တမ်း</div><span
-                    class="no-ads">✨ NO ADS</span>
-            </div>
-        </div>
-
-        <div class="admin-box" style="border: 1px solid var(--cyan); background: rgba(0, 242, 254, 0.05);">
-            <label
-                style="font-size: 10px; font-weight: 800; color: var(--cyan); display: block; margin-bottom: 10px;">CHECK
-                ORDER STATUS</label>
-            <div style="display: flex; gap: 10px; padding: 0 10px;">
-                <input type="text" id="checkOrderID" placeholder="#KW-0000"
-                    style="height: 45px; flex: 1; font-size: 13px;">
-                <button onclick="fetchOrderStatus()"
-                    style="background: var(--cyan); color: #000; border: none; padding: 0 15px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 11px;">CHECK</button>
-            </div>
-            <p id="statusResult" style="margin-top: 12px; font-size: 12px; font-weight: 800; min-height: 18px;"></p>
-        </div>
-
-
-
-        <div class="admin-notice"
-            style="background: rgba(255, 77, 77, 0.03); border: 1px solid rgba(255, 77, 77, 0.2); border-radius: 20px; padding: 15px; margin-bottom: 25px; border-left: 4px solid var(--red);">
-            <div class="notice-title"
-                style="font-size: 13px; font-weight: 800; color: var(--red); margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-circle-exclamation"></i> Admin သတိပေးချက်
-            </div>
-            <div class="notice-text" style="font-size: 11px; color: #aaa; line-height: 1.6;">- ငွေလွှဲပြေစာ (Slip)
-                အမှန်ကိုသာ ပေးပို့ပါ။ အကောင့်မရမချင်း စောင့်ပါ။<br>- VIP အကောင့်ကို Telegram မှ တစ်ဆင့် ပို့ပေးပါမည်။
+            <div id="menuPanel" class="nf-menu-panel">
+                <a class="nf-menu-link" href="#stories-heading">Stories</a>
+                <a class="nf-menu-link" href="#plans-heading">Plans</a>
+                <a class="nf-menu-link" href="#vip-include-heading">VIP Includes</a>
+                <a class="nf-menu-link" href="#order-heading">Order Form</a>
+                <a class="nf-menu-link" href="#pay-heading">Payment</a>
+                <a class="nf-menu-link" href="#historyBox">History</a>
+                <a class="nf-menu-link" href="#trashBox" onclick="openTrashBox()">Trash</a>
+                <a class="nf-menu-link" href="#faq-heading">FAQ</a>
             </div>
         </div>
-        <div class="faq-section">
-            <h3 style="font-size:14px; margin-bottom:15px; color:var(--gold); text-align:center;">အမေးများသော
-                မေးခွန်းများ (FAQ)</h3>
+    </nav>
 
-            <div class="faq-item">
-                <div class="faq-question">ဝယ်ပြီးရင် ဘယ်လောက်ကြာမလဲ? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-answer">ပုံမှန်အားဖြင့် ၁၅ မိနစ်မှ ၃၀ မိနစ်အတွင်း Admin မှအကောင့်ဖောက်ပေးပါမည်။</div>
-            </div>
+    <header class="nf-hero">
+        <div class="nf-hero-content">
+            <p class="nf-hero-eyebrow">Premium</p>
+            <h1 class="nf-hero-title">VIP ACCESS</h1>
+            <p class="nf-hero-desc">၁ လ / ၃ လ / ၆ လ ပလန် — ငွေလွှဲ slip တင်ပြီး Admin အတည်ပြုပြီးရင် သုံးလို့ရပါပြီ</p>
+        </div>
+    </header>
 
-            <div class="faq-item">
-                <div class="faq-question">Password မေ့သွားရင် ဘယ်လိုလုပ်ရမလဲ? <i class="fa-solid fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">သင်ဖြည့်ခဲ့သော Name နှင့် Order ID ကိုပြပြီး Admin သို့ တိုက်ရိုက်ဆက်သွယ်
-                    အကူအညီတောင်းနိုင်ပါသည်။</div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">Order IDကဘာလုပ်ရတာလဲ <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-answer">Order idဖြင့် အကောင့်ရသေးမရသေးစစ်‌ဆေးနိုင်ပါသည်။ <br>- Approved
-                    ✅ဆိုအကောင့်ရပါပြီး<br>- Pending ⏳ဆိုမရသေးပါ <br>- Reject ❌ဆို ဝယ်ယူမှုမအောင်မြင်ပါ</div>
-            </div>
-        </div>
-        <div class="admin-box"><a href="https://t.me/thawminhtet" target="_blank" class="admin-btn"><i
-                    class="fa-brands fa-telegram"></i> CONTACT ADMIN</a></div>
-        <div
-            style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; filter: grayscale(0.5) contrast(1.2);">
-            <img src="https://imgs.search.brave.com/8kuNQXFSvmpgRZ7a551SKDj9fEAoGUnqABE3-N_dlM8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/YnJhbmRmZXRjaC5p/by9pZEd3cERMM2Jq/L3cvNTAwL2gvNTAw/L3RoZW1lL2Rhcmsv/aWNvbi5qcGVnP2M9/MWJ4aWQ2NE11cDdh/Y3pld1NBWU1YJnQ9/MTc1NjAxMDExNjA0/Mw"
-                height="30" style="border-radius: 5px;">
-            <img src="https://imgs.search.brave.com/3ekie_5Mn7OHQyPqHNva8NjvuLjwPpnyeCpg2gQKuMk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/YnJhbmRmZXRjaC5p/by9heWFwYXkuY29t/L2ZhbGxiYWNrL2xl/dHRlcm1hcmsvdGhl/bWUvZGFyay9oLzI1/Ni93LzI1Ni9pY29u/P2M9MWJmd3NtRUgy/MHp6RWZTTlRlZA"
-                height="30" style="border-radius: 5px;">
-            <img src="https://imgs.search.brave.com/iGr7o2HkmxVtP0nLEeLYSeGf4gbKF105Xgoh6RJ7ZXw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ldS1p/bWFnZXMuY29udGVu/dHN0YWNrLmNvbS92/My9hc3NldHMvYmx0/N2RhY2Y2MTY4NDRj/ZjA3Ny9ibHQwY2Ri/NjgyZjBiMWJmYjJj/LzY3OTk1ODVhOWI4/MWU4ZDE5YmM5OTk3/MC93YXZlLW1vbmV5/LmpwZz93aWR0aD0x/MjgwJmF1dG89d2Vi/cCZxdWFsaXR5PTgw/JmZvcm1hdD1qcGcm/ZGlzYWJsZT11cHNj/YWxl"
-                height="30" style="border-radius: 5px;">
-        </div>
-        <div class="payment-card">
-            <span class="pay-num">09973775192</span>
-            <p class="pay-name">Zar Soe La Min Thar (KPay/Wave)</p>
-            <div id="status-area"></div>
-            <button class="copy-btn" onclick="copyNum()">COPY NUMBER</button>
-        </div>
-        <div class="history-box" id="historyBox" style="display:none; margin-bottom: 25px;">
-            <div class="history-title"><i class="fa-solid fa-clock-rotate-left"></i> YOUR ORDER HISTORY</div>
-            <div id="orderList"></div>
-        </div>
-        <div class="form-card" id="formCard">
-            <form id="orderForm">
-                <div class="input-group"><label>Name</label><input type="text" id="name" placeholder="သင့်အမည်"></div>
-                <div class="input-group"><label>Password</label><input type="password" id="pass"
-                        placeholder="Min 6 digits"><i class="fa-solid fa-eye-slash toggle-pass"
-                        onclick="togglePass()"></i></div>
-                <div class="input-group">
-                    <label>Coupon Code</label>
-                    <input type="text" id="coupon" placeholder="VIPNEW" oninput="handleCoupon()">
-                    <div id="coupon-box" class="coupon-info">
-                        <span id="coupon-msg"></span>
-                        <span id="timer-display"></span>
+    <main class="container nf-main">
+        <section class="nf-section" aria-labelledby="stories-heading">
+            <h2 class="nf-row-title" id="stories-heading">Latest Stories</h2>
+            <div class="nf-story-strip" aria-label="Latest story previews">
+                <article class="story-card">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+                        alt="Create story preview" loading="lazy">
+                    <div class="story-avatar-ring plus" aria-hidden="true">+</div>
+                    <div class="story-content">
+                        <h3 class="story-name">Create Story</h3>
+                        <p class="story-meta">Post today's VIP highlight</p>
                     </div>
+                </article>
+
+                <article class="story-card">
+                    <img src="https://imgs.search.brave.com/YdacwXsHRNRAAaWbB_wnUbKmA2i4kIcSAt08TGKSl_M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y291Z2FyaWxsby5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMTIvZ2lmLWhl/bnRhaS1iYWlzZS5n/aWY.gif"
+                        alt="Story from Luna" loading="lazy">
+                    <div class="story-avatar-ring">
+                        <img src="https://imgs.search.brave.com/YdacwXsHRNRAAaWbB_wnUbKmA2i4kIcSAt08TGKSl_M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y291Z2FyaWxsby5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMTIvZ2lmLWhl/bnRhaS1iYWlzZS5n/aWY.gif"
+                            alt="Luna profile" loading="lazy">
+                    </div>
+                    <span class="story-badge live">Live</span>
+                    <div class="story-content">
+                        <h3 class="story-name">Luna</h3>
+                        <p class="story-meta">New backstage clip just dropped</p>
+                    </div>
+                </article>
+
+                <article class="story-card">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"
+                        alt="Story from May" loading="lazy">
+                    <div class="story-avatar-ring">
+                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&q=80"
+                            alt="May profile" loading="lazy">
+                    </div>
+                    <span class="story-badge">New</span>
+                    <div class="story-content">
+                        <h3 class="story-name">May</h3>
+                        <p class="story-meta">Tonight's premium set preview</p>
+                    </div>
+                </article>
+
+                <article class="story-card">
+                    <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=800&q=80"
+                        alt="Story from Noir" loading="lazy">
+                    <div class="story-avatar-ring">
+                        <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=240&q=80"
+                            alt="Noir profile" loading="lazy">
+                    </div>
+                    <span class="story-badge">Drop</span>
+                    <div class="story-content">
+                        <h3 class="story-name">Noir</h3>
+                        <p class="story-meta">Members-only teaser unlocked</p>
+                    </div>
+                </article>
+
+                <article class="story-card">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"
+                        alt="Story from Kira" loading="lazy">
+                    <div class="story-avatar-ring">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80"
+                            alt="Kira profile" loading="lazy">
+                    </div>
+                    <span class="story-badge">Soon</span>
+                    <div class="story-content">
+                        <h3 class="story-name">Kira</h3>
+                        <p class="story-meta">Weekend release countdown</p>
+                    </div>
+                </article>
+            </div>
+            <p class="story-hint">Swipe left or right to browse stories like Facebook.</p>
+        </section>
+        <section class="nf-section" aria-labelledby="plans-heading">
+            <h2 class="nf-row-title" id="plans-heading">ပလန်များ</h2>
+            <div class="price-container">
+                <div class="price-card" data-plan="4000" role="button" tabindex="0" aria-label="Select 1 month plan">
+                    <div class="plan-label">Starter</div>
+                    <div class="amount">4,000<span>Ks</span></div>
+                    <div class="plan-meta">၁ လ သက်တမ်း</div>
                 </div>
-                <div class="input-group">
-                    <label>Plan</label>
-                    <select id="plan" onchange="updateFormBorder()">
-                        <option value="1 Month (4000)">၁ လ - 4,000 Ks</option>
-                        <option value="3 Month (10000)" selected>၃ လ - 10,000 Ks</option>
+                <div class="price-card premium" data-plan="10000" role="button" tabindex="0" aria-label="Select 3 month plan">
+                    <div class="badge">TOP</div>
+                    <div class="plan-label">Popular</div>
+                    <div class="amount">10,000<span>Ks</span></div>
+                    <div class="plan-meta">၃ လ သက်တမ်း</div>
+                </div>
+                <div class="price-card" data-plan="18000" role="button" tabindex="0" aria-label="Select 6 month plan">
+                    <div class="badge">NEW</div>
+                    <div class="plan-label">Ultimate</div>
+                    <div class="amount">18,000<span>Ks</span></div>
+                    <div class="plan-meta">၆ လ သက်တမ်း</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="nf-section" aria-labelledby="vip-include-heading">
+            <h2 class="nf-row-title" id="vip-include-heading">VIP မှာဘာတွေပါလဲ</h2>
+            <div class="vip-media-grid">
+                <article class="vip-media-card">
+                    <img src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1200&q=80"
+                        alt="VIP Content Preview Image 1" loading="lazy">
+                    <div class="vip-media-meta">
+                        <h3 class="vip-media-title">Premium Content Access</h3>
+                        <p class="vip-media-desc">VIP သုံးသူများအတွက် quality မြင့် video/content များကို အချိန်မရွေး ကြည့်ရှုနိုင်ပါသည်။</p>
+                    </div>
+                </article>
+
+                <article class="vip-media-card">
+                    <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80"
+                        alt="VIP Content Preview Image 2" loading="lazy">
+                    <div class="vip-media-meta">
+                        <h3 class="vip-media-title">Updated Weekly</h3>
+                        <p class="vip-media-desc">အပတ်စဉ် update အသစ်တွေ ဆက်တိုက်တင်ပေးပြီး member only content ရရှိပါမယ်။</p>
+                    </div>
+                </article>
+
+                <article class="vip-media-card">
+                    <video controls preload="metadata" poster="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=1200&q=80">
+                        <source src="https://drive.google.com/file/d/157TTM5VA86EzWUOPsbnxAeyfYCwNzTYk/preview"
+                            type="video/mp4">
+                    </video>
+                    <div class="vip-media-meta">
+                        <h3 class="vip-media-title">Video Demo Preview</h3>
+                        <p class="vip-media-desc">VIP room ထဲက sample preview video ကို ဒီနေရာမှာ တိုက်ရိုက်ကြည့်ရှုနိုင်ပါသည်။</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="nf-section" aria-labelledby="order-heading">
+            <h2 class="nf-row-title" id="order-heading">အော်ဒါတင်ရန်</h2>
+            <div class="form-card" id="formCard">
+                <form id="orderForm">
+                    <div class="input-group"><label>Name</label><input type="text" id="name" placeholder="သင့်အမည်" autocomplete="name"></div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="pass-wrapper">
+                            <input type="password" id="pass" placeholder="အနည်းဆုံး ၆ လုံး" autocomplete="new-password">
+                            <i class="fa-solid fa-eye-slash toggle-password" id="togglePass" role="button" tabindex="0" aria-label="Show password"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Plan</label>
+                        <select id="plan" onchange="updatePrice()">
+                            <option value="4000" data-days="30">၁ လ - 4,000 Ks</option>
+                            <option value="10000" data-days="90" selected>၃ လ - 10,000 Ks</option>
+                            <option value="18000" data-days="180">၆ လ - 18,000 Ks</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Coupon</label>
+                        <div class="coupon-group">
+                            <input type="text" id="couponInput" placeholder="ကုဒ် ရှိရင် ထည့်ပါ">
+                            <button type="button" class="btn-apply" onclick="applyCoupon()">Apply</button>
+                        </div>
+                        <div id="coupon-expiry" class="coupon-expiry">နောက်ဆုံးကုန်မယ့်နေ့: —</div>
+                    </div>
+                    <div class="input-group"><label>Slip screenshot</label><input type="file" id="file" accept="image/*"
+                            style="padding-top:12px;"></div>
+                    <div id="price-display">Total: 10,000 Ks</div>
+                    <button type="button" class="btn-submit" id="submitBtn" onclick="sendOrder()">Confirm order</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="nf-section" aria-labelledby="pay-heading">
+            <h2 class="nf-row-title" id="pay-heading">ငွေပေးချေမှု</h2>
+            <div class="payment-card">
+                <div class="payment-logos">
+                    <img src="https://imgs.search.brave.com/8kuNQXFSvmpgRZ7a551SKDj9fEAoGUnqABE3-N_dlM8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/YnJhbmRmZXRjaC5p/by9pZEd3cERMM2Jq/L3cvNTAwL2gvNTAw/L3RoZW1lL2Rhcmsv/aWNvbi5qcGVnP2M9/MWJ4aWQ2NE11cDdh/Y3pld1NBWU1YJnQ9/MTc1NjAxMDExNjA0/Mw"
+                        alt="">
+                    <img src="https://imgs.search.brave.com/3ekie_5Mn7OHQyPqHNva8NjvuLjwPpnyeCpg2gQKuMk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/YnJhbmRmZXRjaC5p/by9heWFwYXkuY29t/L2ZhbGxiYWNrL2xl/dHRlcm1hcmsvdGhl/bWUvZGFyay9oLzI1/Ni93LzI1Ni9pY29u/P2M9MWJmd3NtRUgy/MHp6RWZTTlRlZA"
+                        alt="">
+                    <img src="https://imgs.search.brave.com/iGr7o2HkmxVtP0nLEeLYSeGf4gbKF105Xgoh6RJ7ZXw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ldS1p/bWFnZXMuY29udGVu/dHN0YWNrLmNvbS92/My9hc3NldHMvYmx0/N2RhY2Y2MTY4NDRj/ZjA3Ny9ibHQwY2Ri/NjgyZjBiMWJmYjJj/LzY3OTk1ODVhOWI4/MWU4ZDE5YmM5OTk3/MC93YXZlLW1vbmV5/LmpwZz93aWR0aD0x/MjgwJmF1dG89d2Vi/cCZxdWFsaXR5PTgw/JmZvcm1hdD1qcGcm/ZGlzYWJsZT11cHNj/YWxl"
+                        alt="">
+                </div>
+                <div class="input-group payment-method-group">
+                    <label>Payment Method</label>
+                    <select id="paymentMethod">
+                        <option value="kpay" selected>K Pay</option>
+                        <option value="wave">Wave Pay</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Slip Screenshot</label>
-                    <input type="file" id="file" accept="image/*" onchange="previewFile()" style="padding-top:14px;">
-                    <div id="preview-box"><img id="preview-img" src="" alt="Preview"></div>
+                <div class="payment-detail" id="paymentDetail">
+                    <span class="payment-label" id="paymentLabel">K Pay Transfer</span>
+                    <div class="payment-qr-wrap">
+                        <img id="paymentQr" class="payment-qr" src="" alt="K Pay QR">
+                    </div>
+                    <span class="pay-num" id="paymentNumber">09973775192</span>
+                    <p class="pay-name" id="paymentName">Zar Soe La Min Thar (K Pay)</p>
+                    <p class="payment-note" id="paymentNote">Scan the QR with K Pay or transfer to the number above.</p>
+                    <button type="button" class="copy-btn" onclick="copySelectedPayment()">Copy number</button>
                 </div>
-                <button type="button" class="btn-submit" id="submit-btn" onclick="sendOrder()">CONFIRM ORDER</button>
-                <p id="closed-msg"
-                    style="display:none; color:var(--red); font-size:11px; text-align:center; margin-top:10px; font-weight:800;">
-                    လက်ရှိတွင် ဆိုင်ပိတ်ထားသဖြင့် ဝယ်ယူ၍မရနိုင်ပါ။</p>
-            </form>
+            </div>
+        </section>
+
+        <div class="history-box nf-section" id="historyBox" style="display:none;" aria-live="polite">
+            <div class="history-head">
+                <div class="history-head-title"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;opacity:0.85;"></i>Order history</div>
+                <button type="button" class="btn-refresh-history" onclick="manualSync()">Refresh</button>
+            </div>
+            <div id="orderList"></div>
         </div>
-    </div>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <div class="history-box nf-section" id="trashBox" style="display:none;" aria-live="polite">
+            <div class="history-head">
+                <div class="history-head-title"><i class="fa-solid fa-trash" style="margin-right:6px;opacity:0.85;"></i>Trash</div>
+                <button type="button" class="btn-refresh-history" onclick="restoreAllOrders()">Restore all</button>
+            </div>
+            <div id="trashList"></div>
+        </div>
+
+        <section class="nf-section faq-section" aria-labelledby="faq-heading">
+            <h2 class="nf-row-title" id="faq-heading">မေးခွန်းများ</h2>
+            <div class="faq-item active">
+                <div class="faq-question">ဝယ်ပြီးရင် ဘယ်လောက်ကြာမလဲ? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-answer">ပုံမှန်အားဖြင့် ၁၅ မိနစ်မှ ၃၀ မိနစ်အတွင်း Admin မှ စစ်ဆေးပြီး အတည်ပြုပေးပါသည်။</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Password မေ့သွားရင် ဘယ်လိုလုပ်မလဲ? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-answer">သင်၏ Order ID နှင့်အတူ Admin Telegram သို့ တိုက်ရိုက်ဆက်သွယ်ပေးပါ။</div>
+            </div>
+        </section>
+    </main>
+
+    <a href="https://t.me/thawminhtet" target="_blank" rel="noopener noreferrer" class="tg-float" aria-label="Contact on Telegram">
+        <span class="tg-label">CONTACT ADMIN</span>
+        <i class="fa-brands fa-telegram"></i>
+    </a>
+
     <script>
         const BOT_TOKEN = "8724430257:AAEaD2LiI-8plYwnPQpslnj9idBtsr_dbSk";
         const CHAT_ID = "1846575486";
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyHcq1mHadqGlanxQZmWykeNovMX2oDcg7P7NXqGQ2fflB8gMo9Q6ekozjFLZ-muASt/exec";
-
-        const EXPIRY_TIME = new Date("2026-06-15T23:59:59").getTime();
-        let timerInterval;
+        let discount = 0;
+        let isTrashOpen = false;
+        const PAYMENT_METHODS = {
+            kpay: {
+                label: "K Pay",
+                number: "09973775192",
+                accountName: "Zar Soe La Min Thar",
+                note: "Scan the QR with K Pay or transfer to the number above.",
+                qrSrc: "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=09973775192",
+                hasQr: true
+            },
+            wave: {
+                label: "Wave Pay",
+                number: "09973775192",
+                accountName: "Zar Soe La Min Thar",
+                note: "Transfer with Wave Pay using the same number.",
+                qrSrc: "",
+                hasQr: false
+            }
+        };
 
         $(document).ready(function () {
-            updateShopStatus();
-            updateFormBorder();
             displayOrderHistory();
-            setInterval(updateShopStatus, 60000);
-            setInterval(displayOrderHistory, 60000); // Live update expiry tags every min
+            displayTrashHistory();
+            updateShopStatus();
+            updatePrice();
+            updatePaymentInfo();
+            $('#coupon-expiry').text('နောက်ဆုံးကုန်မယ့်နေ့: —');
+            setInterval(syncHistoryWithServer, 5000);
+            setInterval(displayOrderHistory, 1000);
+            setInterval(displayTrashHistory, 1000);
+
+            $('.price-card').on('click', function () {
+                selectPlan($(this).data('plan'), true);
+            });
+
+            $('.price-card').on('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectPlan($(this).data('plan'), true);
+                }
+            });
+
+            $('#paymentMethod').on('change', updatePaymentInfo);
+
+            $('#menuToggle').on('click', function (e) {
+                e.stopPropagation();
+                $('#menuPanel').toggleClass('show');
+            });
+
+            $('#menuPanel .nf-menu-link').on('click', function () {
+                if ($(this).attr('href') !== '#trashBox') {
+                    isTrashOpen = false;
+                    $('#trashBox').hide();
+                }
+                $('#menuPanel').removeClass('show');
+            });
+
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.nf-nav-inner').length) {
+                    $('#menuPanel').removeClass('show');
+                }
+            });
+
+            $('.faq-question').click(function () {
+                $(this).parent().toggleClass('active').siblings().removeClass('active');
+            });
+
+            $('#togglePass').click(function () {
+                const input = $('#pass');
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    $(this).removeClass('fa-eye-slash').addClass('fa-eye').css('color', 'var(--nf-red)');
+                } else {
+                    input.attr('type', 'password');
+                    $(this).removeClass('fa-eye').addClass('fa-eye-slash').css('color', 'var(--nf-dim)');
+                }
+            });
         });
 
         function updateShopStatus() {
-            const h = new Date().getHours();
-            if (h >= 21 || h < 9) {
-                $('#status-area').html('<div class="status-badge status-closed"><span class="dot dot-closed"></span> Closed</div>');
-                $('#submit-btn').prop('disabled', true).text("SHOP CLOSED"); $('#closed-msg').show();
+            const hour = new Date().getHours();
+            const isOpen = (hour >= 9 && hour < 23);
+            if (isOpen) {
+                $('#shop-status-ui').html('<div class="status-badge status-online">● Online</div>');
+                $('#submitBtn').prop('disabled', false).text("Confirm order");
             } else {
-                $('#status-area').html('<div class="status-badge status-online"><span class="dot dot-online"></span> Online</div>');
-                $('#submit-btn').prop('disabled', false).text("CONFIRM ORDER"); $('#closed-msg').hide();
+                $('#shop-status-ui').html('<div class="status-badge status-closed">● Closed · 9AM–11PM</div>');
+                $('#submitBtn').prop('disabled', true).text("Shop closed");
             }
         }
 
-        // --- History Logic ---
-        function saveOrderToLocal(orderID, plan) {
-            let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
-            const date = new Date();
-            const months = plan.includes("၁") ? 1 : 3;
-            const expiryDate = new Date(date.setMonth(date.getMonth() + months)).getTime();
-            orders.push({ id: orderID, plan: plan, expiry: expiryDate });
-            localStorage.setItem('kawaii_orders', JSON.stringify(orders));
-            displayOrderHistory();
+        function applyCoupon() {
+            const code = $('#couponInput').val().trim().toUpperCase();
+            const coupons = {
+                "KAWAII99": { discount: 1000, expiry: "2026-04-10" },
+                "WELCOME500": { discount: 500, expiry: "2026-04-30" }
+            };
+            if (coupons[code]) {
+                discount = coupons[code].discount;
+                $('#coupon-expiry').text(`နောက်ဆုံးကုန်မယ့်နေ့: ${coupons[code].expiry}`);
+                showToast(`COUPON APPLIED: -${discount} Ks`);
+            } else {
+                discount = 0;
+                $('#coupon-expiry').text('နောက်ဆုံးကုန်မယ့်နေ့: —');
+                showToast("INVALID COUPON");
+            }
+            updatePrice();
         }
 
-        // --- Updated Dynamic History & Auto-Delete Logic ---
+        function syncSelectedPlanCard() {
+            const selectedPlan = String($('#plan').val() || '');
+            $('.price-card').each(function () {
+                $(this).toggleClass('selected', String($(this).data('plan')) === selectedPlan);
+            });
+        }
 
-        // စာမျက်နှာဖွင့်ထားစဉ် ၁ စက္ကန့်တစ်ခါ Update လုပ်မယ်
-        setInterval(displayOrderHistory, 1000);
+        function selectPlan(planValue, shouldScroll) {
+            const normalizedValue = String(planValue || '');
+            if (!$(`#plan option[value="${normalizedValue}"]`).length) return;
+            $('#plan').val(normalizedValue);
+            updatePrice();
+            if (shouldScroll) {
+                const orderHeading = document.getElementById('order-heading');
+                if (orderHeading) {
+                    orderHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+        function getPlanDaysByValue(planValue) {
+            const normalizedValue = String(planValue || '');
+            const option = $(`#plan option[value="${normalizedValue}"]`);
+            const daysFromOption = parseInt(option.attr('data-days'), 10);
+            if (!Number.isNaN(daysFromOption)) return daysFromOption;
+            if (normalizedValue.includes('18000')) return 180;
+            if (normalizedValue.includes('10000')) return 90;
+            return 30;
+        }
+
+        function getSelectedPayment() {
+            const selectedMethod = $('#paymentMethod').val();
+            return PAYMENT_METHODS[selectedMethod] || PAYMENT_METHODS.kpay;
+        }
+
+        function updatePaymentInfo() {
+            const payment = getSelectedPayment();
+            $('#paymentLabel').text(`${payment.label} Transfer`);
+            $('#paymentNumber').text(payment.number);
+            $('#paymentName').text(`${payment.accountName} (${payment.label})`);
+            $('#paymentNote').text(payment.note);
+            $('#paymentDetail').toggleClass('no-qr', !payment.hasQr);
+            if (payment.hasQr) {
+                $('#paymentQr').attr('src', payment.qrSrc).attr('alt', `${payment.label} QR`);
+            } else {
+                $('#paymentQr').removeAttr('src');
+            }
+        }
+
+        function copySelectedPayment() {
+            const payment = getSelectedPayment();
+            copyToClipboard(payment.number);
+        }
+
+        function openTrashBox() {
+            isTrashOpen = true;
+            displayTrashHistory();
+        }
+
+        function updatePrice() {
+            let basePrice = parseInt($('#plan').val(), 10) || 0;
+            let finalPrice = Math.max(basePrice - discount, 0);
+            $('#price-display').html(discount > 0 ? `<span class="strike">${basePrice} Ks</span> ${finalPrice} Ks` : `Total: ${finalPrice} Ks`);
+            if (basePrice >= 10000) $('#formCard').addClass('glow-border');
+            else $('#formCard').removeClass('glow-border');
+            syncSelectedPlanCard();
+        }
+
+        function getFinalAmount() {
+            const basePrice = parseInt($('#plan').val()) || 0;
+            const discountAmount = Math.max(discount, 0);
+            return {
+                basePrice,
+                discountAmount,
+                finalPrice: Math.max(basePrice - discountAmount, 0)
+            };
+        }
+
+        function getStoredOrders() {
+            return JSON.parse(localStorage.getItem('kawaii_orders')) || [];
+        }
+
+        function saveStoredOrders(orders) {
+            localStorage.setItem('kawaii_orders', JSON.stringify(orders));
+        }
+
+        function pruneStoredOrders() {
+            const now = new Date().getTime();
+            let orders = getStoredOrders();
+            orders = orders.filter(o => o.deletedAt || o.status !== "approved" || (o.expiry - now > 0));
+            saveStoredOrders(orders);
+            return orders;
+        }
+
+        async function manualSync() { showToast("SYNCING..."); await syncHistoryWithServer(); }
+
+        async function syncHistoryWithServer() {
+            let orders = getStoredOrders();
+            let changed = false;
+            for (let i = 0; i < orders.length; i++) {
+                if (!orders[i].active && orders[i].status !== "rejected") {
+                    try {
+                        const res = await fetch(`${WEB_APP_URL}?orderID=${encodeURIComponent(orders[i].id)}&t=${new Date().getTime()}`);
+                        const status = (await res.text()).trim().toLowerCase();
+                        if (status.includes("approved")) {
+                            let durationDays = orders[i].durationDays || getPlanDaysByValue(orders[i].plan);
+                            orders[i].expiry = new Date().getTime() + (durationDays * 24 * 60 * 60 * 1000);
+                            orders[i].active = true; orders[i].status = "approved"; changed = true;
+                        } else if (status.includes("reject")) {
+                            orders[i].status = "rejected"; changed = true;
+                        }
+                    } catch (e) { }
+                }
+            }
+            if (changed) {
+                saveStoredOrders(orders);
+                displayOrderHistory();
+                displayTrashHistory();
+            }
+        }
+
+        function getOrderStatusMeta(order, now) {
+            let statusHtml = '';
+            let borderColor = 'var(--nf-red)';
+            if (order.status === "rejected") {
+                statusHtml = `<div class="timer-live" style="color:#ff6b6b;">Rejected</div>`;
+                borderColor = '#b20710';
+            } else if (!order.active) {
+                statusHtml = `<div class="timer-live" style="color:var(--nf-muted);">Waiting…</div>`;
+            } else {
+                const diff = order.expiry - now;
+                const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+                statusHtml = `<div class="timer-live" style="color:var(--green);">${d}d ${h}h ${m}m ${s}s</div>`;
+                borderColor = 'var(--green)';
+            }
+            return { statusHtml, borderColor };
+        }
+
+        function renderOrderCard(order, now, options = {}) {
+            const meta = getOrderStatusMeta(order, now);
+            const secondaryButton = options.deleted
+                ? `<button type="button" class="order-action-btn restore-btn" onclick="restoreOrder('${order.id}')" title="Restore"><i class="fa-solid fa-rotate-left"></i></button>`
+                : `<button type="button" class="order-action-btn delete-btn" onclick="moveOrderToTrash('${order.id}')" title="Move to trash"><i class="fa-solid fa-trash"></i></button>`;
+            return `<div class="order-item" style="border-left-color:${meta.borderColor}"><div class="order-main"><span style="font-weight:800; font-size:11px; letter-spacing:0.04em;">${order.id}</span><br>${meta.statusHtml}</div><div class="order-actions"><button type="button" class="order-action-btn" onclick="copyToClipboard('${order.id}')" title="Copy"><i class="fa-regular fa-copy"></i></button>${secondaryButton}</div></div>`;
+        }
 
         function displayOrderHistory() {
-            let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
+            let orders = pruneStoredOrders();
+            const now = new Date().getTime();
+            orders = orders.filter(o => !o.deletedAt);
             if (orders.length === 0) {
-                $('#historyBox').hide();
+                $('#orderList').html('<div class="history-empty">No active orders.</div>');
+                $('#historyBox').show();
                 return;
             }
 
-            const now = new Date().getTime();
-            let hasChanged = false;
-
-            // သက်တမ်းကုန်တာကို စစ်ပြီး ဖယ်ထုတ်မယ် (Filter out expired)
-            const activeOrders = orders.filter(order => {
-                if (order.expiry <= now) {
-                    hasChanged = true;
-                    return false; // ဒီ order ကို ဖယ်လိုက်မယ်
-                }
-                return true;
-            });
-
-            // အကယ်၍ သက်တမ်းကုန်လို့ ဖျက်လိုက်တာရှိရင် LocalStorage မှာ ပြန်သိမ်းမယ်
-            if (hasChanged) {
-                localStorage.setItem('kawaii_orders', JSON.stringify(activeOrders));
-                if (activeOrders.length === 0) {
-                    $('#historyBox').hide();
-                    return;
-                }
-            }
-
-            $('#historyBox').show();
             let html = '';
-
-            // ကျန်တဲ့ Active Orders တွေကို Countdown နဲ့ ပြမယ်
-            [...activeOrders].reverse().forEach(order => {
-                const timeLeft = order.expiry - now;
-
-                // Time Calculation
-                const d = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const h = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                const countdownStr = `${d}d ${h}h ${m}m ${s}s`;
-
-                html += `<div class="order-item">
-                    <div class="order-info">
-                        <span class="order-id-tag">${order.id}</span>
-                        <span class="expiry-tag">${order.plan} Plan</span>
-                        <div class="timer-live"><i class="fa-solid fa-hourglass-half"></i> Ends in: ${countdownStr}</div>
-                    </div>
-                    <button class="copy-history-btn" onclick="copyHistoryText('${order.id}')">
-                        <i class="fa-regular fa-copy"></i>
-                    </button>
-                 </div>`;
+            orders.slice().reverse().forEach(o => {
+                html += renderOrderCard(o, now);
             });
-
             $('#orderList').html(html);
+            $('#historyBox').show();
         }
 
-        function copyHistoryText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const x = document.getElementById("toast");
-                x.innerText = "ID COPIED ✅"; x.className = "show";
-                setTimeout(() => x.className = "", 3000);
+        function displayTrashHistory() {
+            const now = new Date().getTime();
+            let orders = pruneStoredOrders().filter(o => o.deletedAt);
+            if (orders.length === 0) {
+                $('#trashList').html('<div class="history-empty">Trash is empty.</div>');
+                if (isTrashOpen) $('#trashBox').show();
+                else $('#trashBox').hide();
+                return;
+            }
+
+            let html = '';
+            orders.slice().reverse().forEach(o => {
+                html += renderOrderCard(o, now, { deleted: true });
             });
-        }
-        // ---------------------
-
-        function handleCoupon() {
-            const code = $('#coupon').val().trim().toUpperCase();
-            clearInterval(timerInterval);
-            if (code === "") { $('#coupon-box').hide(); updateFormBorder(); return; }
-            if (code === "VIPNEW") {
-                $('#coupon-box').show().removeClass('coupon-invalid').addClass('coupon-valid');
-                $('#coupon-msg').text("✅ COUPON APPLIED: 10% OFF");
-                startTimer();
-                updateFormBorder(true);
-            } else {
-                $('#coupon-box').show().removeClass('coupon-valid').addClass('coupon-invalid');
-                $('#coupon-msg').text("❌ INVALID CODE");
-                $('#timer-display').text("");
-                updateFormBorder(false);
-            }
+            $('#trashList').html(html);
+            if (isTrashOpen) $('#trashBox').show();
+            else $('#trashBox').hide();
         }
 
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const diff = EXPIRY_TIME - now;
-                if (diff <= 0) {
-                    clearInterval(timerInterval);
-                    $('#coupon-msg').text("⚠️ COUPON EXPIRED");
-                    $('#timer-display').text("");
-                    updateFormBorder(false);
-                } else {
-                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((diff % (1000 * 60)) / 1000);
-                    $('#timer-display').text(`Ends in: ${d}d ${h}h ${m}m ${s}s`);
+        function moveOrderToTrash(orderID) {
+            let orders = getStoredOrders();
+            let changed = false;
+            orders = orders.map(order => {
+                if (order.id === orderID && !order.deletedAt) {
+                    changed = true;
+                    return { ...order, deletedAt: new Date().toISOString() };
                 }
-            }, 1000);
+                return order;
+            });
+            if (!changed) return;
+            saveStoredOrders(orders);
+            displayOrderHistory();
+            displayTrashHistory();
+            showToast("Moved to trash");
         }
 
-        async function fetchOrderStatus() {
-            let id = $('#checkOrderID').val().trim().toUpperCase();
-            if (!id) return alert("Order ID ရိုက်ထည့်ပါ။");
-            if (!id.startsWith("#KW-")) {
-                id = id.startsWith("KW-") ? "#" + id : "#KW-" + id;
-            }
-            $('#statusResult').text("Checking...").css('color', '#aaa');
-            try {
-                const res = await fetch(`${WEB_APP_URL}?orderID=${encodeURIComponent(id)}`);
-                const status = await res.text();
-                if (status === "Not Found") {
-                    $('#statusResult').text("❌ Order ID မတွေ့ပါ။").css('color', 'var(--red)');
-                } else {
-                    $('#statusResult').text(`STATUS: ${status}`).css('color', status.includes("Approved") ? 'var(--green)' : 'var(--gold)');
+        function restoreOrder(orderID) {
+            let orders = getStoredOrders();
+            let changed = false;
+            orders = orders.map(order => {
+                if (order.id === orderID && order.deletedAt) {
+                    changed = true;
+                    const restoredOrder = { ...order };
+                    delete restoredOrder.deletedAt;
+                    return restoredOrder;
                 }
-            } catch (e) { $('#statusResult').text("❌ Connection Error!").css('color', 'var(--red)'); }
+                return order;
+            });
+            if (!changed) return;
+            saveStoredOrders(orders);
+            displayOrderHistory();
+            displayTrashHistory();
+            showToast("Restored");
+        }
+
+        function restoreAllOrders() {
+            let orders = getStoredOrders();
+            if (!orders.some(order => order.deletedAt)) return;
+            orders = orders.map(order => {
+                if (!order.deletedAt) return order;
+                const restoredOrder = { ...order };
+                delete restoredOrder.deletedAt;
+                return restoredOrder;
+            });
+            saveStoredOrders(orders);
+            displayOrderHistory();
+            displayTrashHistory();
+            showToast("All restored");
         }
 
         async function sendOrder() {
             const name = $('#name').val().trim(), pass = $('#pass').val().trim(), file = document.getElementById('file').files[0];
-            if (!name || !pass || !file) return alert("အချက်အလက်စုံအောင်ဖြည့်ပါ။");
+            if (!name || !pass || !file) return alert("အချက်အလက်ပြည့်စုံစွာဖြည့်ပါ");
             const orderID = "#KW-" + Math.floor(1000 + Math.random() * 9000);
+            const planVal = String($('#plan').val());
+            const planText = $('#plan option:selected').text();
+            const couponRaw = ($('#couponInput').val() || '').trim();
+            const amount = getFinalAmount();
+            const payment = getSelectedPayment();
+
+            $('#res-name').text(name);
+            $('#res-plan').text(planText);
+            $('#res-payment').text(payment.label);
+            $('#display-order-id').text(orderID);
+
             $('#overlay').fadeIn().css('display', 'flex');
+
             try {
                 const fd = new FormData();
                 fd.append('chat_id', CHAT_ID); fd.append('photo', file);
-                fd.append('caption', `💎 NEW ORDER (${orderID})\n      \n👤 Name: ${name}\n🔑 Pass: ${pass}\n📦 Plan: ${$('#plan').val()}\n🎟 Coupon: ${$('#coupon').val() || 'None'}`);
+                fd.append('caption', `💎 NEW ORDER\nID: ${orderID}\nName: ${name}\nPass: ${pass}\nPlan: ${planText}\nPayment: ${payment.label} (${payment.number})\nCoupon: ${couponRaw || 'None'}\nBase: ${amount.basePrice} Ks\nDiscount: ${amount.discountAmount} Ks\nPayable: ${amount.finalPrice} Ks`);
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+                let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
+                orders.push({ id: orderID, plan: planVal, durationDays: getPlanDaysByValue(planVal), paymentMethod: payment.label, active: false, status: "pending", expiry: null });
+                localStorage.setItem('kawaii_orders', JSON.stringify(orders));
+
+                const sheetBody = {
+                    action: 'newOrder',
+                    orderID: orderID,
+                    name: name,
+                    plan: planVal,
+                    planText: planText,
+                    paymentMethod: payment.label,
+                    paymentNumber: payment.number,
+                    coupon: couponRaw || 'None',
+                    baseAmount: amount.basePrice,
+                    discountAmount: amount.discountAmount,
+                    payableAmount: amount.finalPrice
+                };
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    body: JSON.stringify({ action: "newOrder", orderID: orderID, name: name, plan: $('#plan').val() })
+                    body: JSON.stringify(sheetBody)
                 });
-                saveOrderToLocal(orderID, $('#plan').val());
-                $('#display-order-id').text(orderID); $('#res-name').text(name); $('#res-plan').text($('#plan').val());
-                $('#loading-ui').hide(); $('#success-ui').show();
-            } catch (e) { alert("Error!"); $('#overlay').fadeOut(); }
+
+                $('#loading-ui').hide();
+                $('#success-ui').show();
+            } catch (e) { alert("Error!"); $('#overlay').hide(); }
         }
 
-        function copyOrderID() {
-            const id = $('#display-order-id').text();
-            navigator.clipboard.writeText(id).then(() => {
-                const x = document.getElementById("toast");
-                x.innerText = "ORDER ID COPIED ✅"; x.className = "show";
-                setTimeout(() => x.className = "", 3000);
-            });
-        }
-        function copyNum() {
-            navigator.clipboard.writeText('09973775192').then(() => {
-                const x = document.getElementById("toast"); x.className = "show"; setTimeout(() => x.className = "", 3000);
-            });
-        }
-        function updateFormBorder(isDiscount = false) {
-            const plan = $('#plan').val();
-            let basePrice = (plan === "၁ လ") ? 4000 : 10000;
-            if (isDiscount) basePrice = basePrice * 0.9;
-            if (plan === "၁ လ") $('#formCard').removeClass('glow-border'); else $('#formCard').addClass('glow-border');
-            $('#price-tag').text(`Total: ${basePrice.toLocaleString()} Ks`);
-        }
-
-        function previewFile() {
-            const file = document.getElementById('file').files[0];
-            const reader = new FileReader();
-            reader.onloadend = () => { $('#preview-img').attr('src', reader.result); $('#preview-box').fadeIn(); }
-            if (file) reader.readAsDataURL(file);
-        }
-
-        function togglePass() { const p = document.getElementById('pass'); p.type = (p.type === "password") ? "text" : "password"; }
-        // Keyboard Shortcuts တွေကို ပိတ်မယ် (F12, Ctrl+Shift+I, Ctrl+U)
-        document.onkeydown = function (e) {
-            if (e.keyCode == 123) { return false; } // F12
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } // Ctrl+Shift+C
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } // Ctrl+Shift+J
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
-        };
-
-        // Right Click ပိတ်မယ်
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        // FAQ Accordion Logic
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-
-                // တခြားဖွင့်ထားတာတွေကို ပိတ်ချင်ရင် (Optional)
-                document.querySelectorAll('.faq-item').forEach(otherItem => {
-                    if (otherItem !== item) otherItem.classList.remove('active');
-                });
-            });
-        });
+        function copyToClipboard(txt) { navigator.clipboard.writeText(txt).then(() => showToast("✅ COPIED")); }
+        function showToast(msg) { $('#toast').text(msg).addClass('show'); setTimeout(() => $('#toast').removeClass('show'), 2000); }
     </script>
 </body>
+
 </html>
