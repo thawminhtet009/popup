@@ -907,6 +907,14 @@
             min-height: 16px;
         }
 
+        .coupon-expiry.success {
+            color: var(--green);
+        }
+
+        .coupon-expiry.error {
+            color: #ff8a8a;
+        }
+
         .btn-apply {
             background: rgba(255, 255, 255, 0.15);
             color: var(--nf-text);
@@ -1497,7 +1505,14 @@
         const CHAT_ID = "1846575486";
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyHcq1mHadqGlanxQZmWykeNovMX2oDcg7P7NXqGQ2fflB8gMo9Q6ekozjFLZ-muASt/exec";
         let discount = 0;
+        let appliedCouponCode = '';
         let isTrashOpen = false;
+        const COUPON_USAGE_KEY = 'kawaii_coupon_usage';
+        const COUPONS = {
+            KAWAII99: { discount: 1000, expiry: "2026-04-10", usageType: "limited", maxUses: 19 },
+            WELCOME500: { discount: 500, expiry: "2026-04-30", usageType: "one_time" },
+            FAN1500: { discount: 1500, expiry: "2026-04-20", usageType: "multi" }
+        };
         const PAYMENT_METHODS = {
             kpay: {
                 label: "K Pay",
@@ -1523,7 +1538,9 @@
             updateShopStatus();
             updatePrice();
             updatePaymentInfo();
+            setCouponInfo('Coupon info: none');
             $('#coupon-expiry').text('နောက်ဆုံးကုန်မယ့်နေ့: —');
+            setCouponInfo('Coupon info: none');
             setInterval(syncHistoryWithServer, 5000);
             setInterval(displayOrderHistory, 1000);
             setInterval(displayTrashHistory, 1000);
@@ -1540,6 +1557,7 @@
             });
 
             $('#paymentMethod').on('change', updatePaymentInfo);
+            $('#couponInput').on('input', handleCouponInputChange);
 
             $('#menuToggle').on('click', function (e) {
                 e.stopPropagation();
@@ -1586,24 +1604,6 @@
                 $('#shop-status-ui').html('<div class="status-badge status-closed">● Closed · 9AM–11PM</div>');
                 $('#submitBtn').prop('disabled', true).text("Shop closed");
             }
-        }
-
-        function applyCoupon() {
-            const code = $('#couponInput').val().trim().toUpperCase();
-            const coupons = {
-                "KAWAII99": { discount: 1000, expiry: "2026-04-10" },
-                "WELCOME500": { discount: 500, expiry: "2026-04-30" }
-            };
-            if (coupons[code]) {
-                discount = coupons[code].discount;
-                $('#coupon-expiry').text(`နောက်ဆုံးကုန်မယ့်နေ့: ${coupons[code].expiry}`);
-                showToast(`COUPON APPLIED: -${discount} Ks`);
-            } else {
-                discount = 0;
-                $('#coupon-expiry').text('နောက်ဆုံးကုန်မယ့်နေ့: —');
-                showToast("INVALID COUPON");
-            }
-            updatePrice();
         }
 
         function syncSelectedPlanCard() {
@@ -1682,6 +1682,139 @@
                 discountAmount,
                 finalPrice: Math.max(basePrice - discountAmount, 0)
             };
+        }
+
+        function normalizeCouponCode(code) {
+            return String(code || '').trim().toUpperCase();
+        }
+
+        function getCouponUsageStore() {
+            return JSON.parse(localStorage.getItem(COUPON_USAGE_KEY)) || {};
+        }
+
+        function saveCouponUsageStore(store) {
+            localStorage.setItem(COUPON_USAGE_KEY, JSON.stringify(store));
+        }
+
+        function getCouponMaxUses(coupon) {
+            if (!coupon) return 0;
+            if (coupon.usageType === 'one_time') return 1;
+            if (coupon.usageType === 'limited') return Math.max(parseInt(coupon.maxUses, 10) || 0, 0);
+            return Infinity;
+        }
+
+        function getCouponUsedCount(code) {
+            const normalizedCode = normalizeCouponCode(code);
+            const usageStore = getCouponUsageStore();
+            return Math.max(parseInt(usageStore[normalizedCode], 10) || 0, 0);
+        }
+
+        function getCouponRemainingUses(code, coupon) {
+            const maxUses = getCouponMaxUses(coupon);
+            if (!Number.isFinite(maxUses)) return Infinity;
+            return Math.max(maxUses - getCouponUsedCount(code), 0);
+        }
+
+        function isCouponExpired(coupon) {
+            if (!coupon || !coupon.expiry) return false;
+            return Date.now() > new Date(`${coupon.expiry}T23:59:59`).getTime();
+        }
+
+        function getCouponStatus(code) {
+            const normalizedCode = normalizeCouponCode(code);
+            if (!normalizedCode) return { valid: false, reason: 'empty' };
+
+            const coupon = COUPONS[normalizedCode];
+            if (!coupon) return { valid: false, reason: 'invalid', code: normalizedCode };
+            if (isCouponExpired(coupon)) return { valid: false, reason: 'expired', code: normalizedCode, coupon };
+
+            const remainingUses = getCouponRemainingUses(normalizedCode, coupon);
+            if (coupon.usageType === 'one_time' && remainingUses <= 0) {
+                return { valid: false, reason: 'used', code: normalizedCode, coupon, remainingUses };
+            }
+            if (coupon.usageType === 'limited' && remainingUses <= 0) {
+                return { valid: false, reason: 'exhausted', code: normalizedCode, coupon, remainingUses };
+            }
+
+            return {
+                valid: true,
+                code: normalizedCode,
+                coupon,
+                remainingUses
+            };
+        }
+
+        function getCouponInfoText(code, coupon, remainingUses) {
+            const parts = [`Expiry: ${coupon.expiry || '-'}`];
+            if (coupon.usageType === 'one_time') {
+                parts.push('One-time');
+            } else if (coupon.usageType === 'limited') {
+                parts.push(`Remaining: ${remainingUses}`);
+            } else {
+                parts.push('Unlimited');
+            }
+            return `${code} | ${parts.join(' | ')}`;
+        }
+
+        function setCouponInfo(text, state = '') {
+            $('#coupon-expiry').text(text).removeClass('success error');
+            if (state) $('#coupon-expiry').addClass(state);
+        }
+
+        function clearAppliedCoupon(message = 'Coupon info: none', state = '') {
+            appliedCouponCode = '';
+            discount = 0;
+            setCouponInfo(message, state);
+            updatePrice();
+        }
+
+        function handleCouponInputChange() {
+            const currentInput = normalizeCouponCode($('#couponInput').val());
+            if (!currentInput) {
+                clearAppliedCoupon();
+                return;
+            }
+            if (appliedCouponCode && currentInput !== appliedCouponCode) {
+                clearAppliedCoupon('Coupon changed. Apply again.', 'error');
+            }
+        }
+
+        function redeemCoupon(code) {
+            const normalizedCode = normalizeCouponCode(code);
+            if (!normalizedCode) return;
+            const usageStore = getCouponUsageStore();
+            usageStore[normalizedCode] = getCouponUsedCount(normalizedCode) + 1;
+            saveCouponUsageStore(usageStore);
+        }
+
+        function applyCoupon() {
+            const status = getCouponStatus($('#couponInput').val());
+            if (!status.valid) {
+                if (status.reason === 'expired') {
+                    clearAppliedCoupon(`${status.code} expired`, 'error');
+                    showToast("COUPON EXPIRED");
+                    return;
+                }
+                if (status.reason === 'used') {
+                    clearAppliedCoupon(`${status.code} already used`, 'error');
+                    showToast("COUPON ALREADY USED");
+                    return;
+                }
+                if (status.reason === 'exhausted') {
+                    clearAppliedCoupon(`${status.code} no uses left`, 'error');
+                    showToast("COUPON LIMIT REACHED");
+                    return;
+                }
+                clearAppliedCoupon();
+                showToast("INVALID COUPON");
+                return;
+            }
+
+            appliedCouponCode = status.code;
+            discount = status.coupon.discount;
+            setCouponInfo(getCouponInfoText(status.code, status.coupon, status.remainingUses), 'success');
+            updatePrice();
+            showToast(`COUPON APPLIED: -${discount} Ks`);
         }
 
         function getStoredOrders() {
@@ -1911,6 +2044,93 @@
 
         function copyToClipboard(txt) { navigator.clipboard.writeText(txt).then(() => showToast("✅ COPIED")); }
         function showToast(msg) { $('#toast').text(msg).addClass('show'); setTimeout(() => $('#toast').removeClass('show'), 2000); }
+        async function sendOrder() {
+            const name = $('#name').val().trim(), pass = $('#pass').val().trim(), file = document.getElementById('file').files[0];
+            if (!name || !pass || !file) return alert("á€¡á€á€»á€€á€ºá€¡á€œá€€á€ºá€•á€¼á€Šá€·á€ºá€…á€¯á€¶á€…á€½á€¬á€–á€¼á€Šá€·á€ºá€•á€«");
+            const orderID = "#KW-" + Math.floor(1000 + Math.random() * 9000);
+            const planVal = String($('#plan').val());
+            const planText = $('#plan option:selected').text();
+            const couponRaw = normalizeCouponCode($('#couponInput').val());
+            if (couponRaw && couponRaw !== appliedCouponCode) {
+                return alert("Coupon သုံးမယ်ဆိုရင် Apply ကိုအရင်နှိပ်ပါ");
+            }
+            const couponStatus = appliedCouponCode ? getCouponStatus(appliedCouponCode) : null;
+            if (appliedCouponCode && (!couponStatus || !couponStatus.valid)) {
+                clearAppliedCoupon('Coupon invalid. Apply again.', 'error');
+                return alert("Coupon သက်တမ်းကုန်သွားပြီးသား သို့မဟုတ် အသုံးပြုခွင့်မရှိတော့ပါ");
+            }
+            const couponCode = couponStatus?.valid ? couponStatus.code : '';
+            const amount = getFinalAmount();
+            const payment = getSelectedPayment();
+
+            $('#res-name').text(name);
+            $('#res-plan').text(planText);
+            $('#res-payment').text(payment.label);
+            $('#display-order-id').text(orderID);
+
+            $('#overlay').fadeIn().css('display', 'flex');
+
+            try {
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID);
+                fd.append('photo', file);
+                fd.append('caption', `ðŸ’Ž NEW ORDER\nID: ${orderID}\nName: ${name}\nPass: ${pass}\nPlan: ${planText}\nPayment: ${payment.label} (${payment.number})\nCoupon: ${couponCode || 'None'}\nBase: ${amount.basePrice} Ks\nDiscount: ${amount.discountAmount} Ks\nPayable: ${amount.finalPrice} Ks`);
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+
+                let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
+                orders.push({ id: orderID, name: name, password: pass, couponCode: couponCode || null, plan: planVal, planText: planText, durationDays: getPlanDaysByValue(planVal), paymentMethod: payment.label, active: false, status: "pending", expiry: null });
+                localStorage.setItem('kawaii_orders', JSON.stringify(orders));
+
+                const sheetBody = {
+                    action: 'newOrder',
+                    orderID: orderID,
+                    name: name,
+                    plan: planVal,
+                    planText: planText,
+                    paymentMethod: payment.label,
+                    paymentNumber: payment.number,
+                    coupon: couponCode || 'None',
+                    baseAmount: amount.basePrice,
+                    discountAmount: amount.discountAmount,
+                    payableAmount: amount.finalPrice
+                };
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(sheetBody)
+                });
+
+                if (couponCode) {
+                    redeemCoupon(couponCode);
+                }
+
+                $('#loading-ui').hide();
+                $('#success-ui').show();
+            } catch (e) { alert("Error!"); $('#overlay').hide(); }
+        }
+        // Keyboard Shortcuts တွေကို ပိတ်မယ် (F12, Ctrl+Shift+I, Ctrl+U)
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) { return false; } // F12
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } // Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } // Ctrl+Shift+J
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
+        };
+
+        // Right Click ပိတ်မယ်
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        // FAQ Accordion Logic
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+
+                // တခြားဖွင့်ထားတာတွေကို ပိတ်ချင်ရင် (Optional)
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    if (otherItem !== item) otherItem.classList.remove('active');
+                });
+            });
+        });
     </script>
 </body>
 
