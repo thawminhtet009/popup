@@ -10,7 +10,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
         :root {
@@ -1176,6 +1175,17 @@
             }
         }
 
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         .tg-float {
             position: fixed;
             bottom: 22px;
@@ -1258,8 +1268,9 @@
         </div>
 
         <div class="glass-receipt" style="display:none;" id="success-ui">
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_yupe9pda.json" speed="1"
-                style="width: 96px; height: 96px; margin: 0 auto;" autoplay></lottie-player>
+            <div style="width: 96px; height: 96px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-circle-check" style="font-size: 96px; color: var(--green); animation: scaleIn 0.5s ease-out;"></i>
+            </div>
             <h2 class="receipt-title">ORDER PLACED</h2>
             <div class="receipt-id" id="display-order-id">#KW-0000</div>
             <div class="receipt-info">
@@ -1282,7 +1293,6 @@
             <div id="menuPanel" class="nf-menu-panel">
                 <a class="nf-menu-link" href="#stories-heading">Stories</a>
                 <a class="nf-menu-link" href="#plans-heading">Plans</a>
-                <a class="nf-menu-link" href="#vip-include-heading">VIP Includes</a>
                 <a class="nf-menu-link" href="#order-heading">Order Form</a>
                 <a class="nf-menu-link" href="#pay-heading">Payment</a>
                 <a class="nf-menu-link" href="#historyBox">History</a>
@@ -1306,7 +1316,7 @@
             <div class="nf-story-strip" aria-label="Latest story previews">
                 <article class="story-card">
                     <img src="https://www.dropbox.com/scl/fi/158e1xv6zhdixkje4l0gm/Yennefer-By-Octokuro.gif?rlkey=ph3yt0mu6cyxqva56w3ac9jlr&st=7ai9q1kc&dl=1"
-                        alt="Create story preview" loading="lazy">
+                        alt="Create story preview" loading="lazy" width="118" height="196">
                     <div class="story-avatar-ring plus" aria-hidden="true">+</div>
                     <div class="story-content">
                         <h3 class="story-name">Cosplayer</h3>
@@ -1316,10 +1326,10 @@
 
                 <article class="story-card">
                     <img src="https://imgs.search.brave.com/YdacwXsHRNRAAaWbB_wnUbKmA2i4kIcSAt08TGKSl_M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y291Z2FyaWxsby5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMTIvZ2lmLWhl/bnRhaS1iYWlzZS5n/aWY.gif"
-                        alt="Story from Luna" loading="lazy">
+                        alt="Story from Luna" loading="lazy" width="118" height="196">
                     <div class="story-avatar-ring">
                         <img src="https://imgs.search.brave.com/YdacwXsHRNRAAaWbB_wnUbKmA2i4kIcSAt08TGKSl_M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y291Z2FyaWxsby5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMTIvZ2lmLWhl/bnRhaS1iYWlzZS5n/aWY.gif"
-                            alt="Luna profile" loading="lazy">
+                            alt="Luna profile" loading="lazy" width="42" height="42">
                     </div>
                     <span class="story-badge live">Live</span>
                     <div class="story-content">
@@ -1330,10 +1340,10 @@
 
                 <article class="story-card">
                     <img src="https://imagex1.sx.cdn.live/images/pinporn/2022/06/27/27592517.webp?width=620"
-                        alt="Story from May" loading="lazy">
+                        alt="Story from May" loading="lazy" width="118" height="196">
                     <div class="story-avatar-ring">
                         <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&q=80"
-                            alt="May profile" loading="lazy">
+                            alt="May profile" loading="lazy" width="42" height="42">
                     </div>
                     <span class="story-badge">New</span>
                     <div class="story-content">
@@ -1344,10 +1354,10 @@
 
                 <article class="story-card">
                     <img src="https://imagex1.sx.cdn.live/images/pinporn/2017/01/18/17236238.webp?width=620"
-                        alt="Story from Noir" loading="lazy">
+                        alt="Story from Noir" loading="lazy" width="118" height="196">
                     <div class="story-avatar-ring">
                         <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=240&q=80"
-                            alt="Noir profile" loading="lazy">
+                            alt="Noir profile" loading="lazy" width="42" height="42">
                     </div>
                     <span class="story-badge">Drop</span>
                     <div class="story-content">
@@ -1358,10 +1368,10 @@
 
                 <article class="story-card">
                     <img src="https://imagex1.sx.cdn.live/images/pinporn/2018/02/27/19171869.webp?width=620"
-                        alt="Story from Kira" loading="lazy">
+                        alt="Story from Kira" loading="lazy" width="118" height="196">
                     <div class="story-avatar-ring">
                         <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80"
-                            alt="Kira profile" loading="lazy">
+                            alt="Kira profile" loading="lazy" width="42" height="42">
                     </div>
                     <span class="story-badge">Soon</span>
                     <div class="story-content">
@@ -1461,6 +1471,7 @@
                     <select id="paymentMethod">
                         <option value="kpay" selected>K Pay</option>
                         <option value="wave">Wave Pay</option>
+                        <option value="aya">AYA Pay</option>
                     </select>
                 </div>
                 <div class="payment-detail" id="paymentDetail">
@@ -1511,7 +1522,8 @@
         const COUPONS = {
             KAWAII99: { discount: 1000, expiry: "2026-04-10", usageType: "limited", maxUses: 19 },
             WELCOME500: { discount: 500, expiry: "2026-04-30", usageType: "one_time" },
-            FAN1500: { discount: 1500, expiry: "2026-04-20", usageType: "multi" }
+            FAN1500: { discount: 1500, expiry: "2026-04-20", usageType: "multi" },
+            FREEVIP: { discount: 18000, expiry: "2026-12-31", usageType: "limited", maxUses: 5 }
         };
         const PAYMENT_METHODS = {
             kpay: {
@@ -1519,16 +1531,24 @@
                 number: "09973775192",
                 accountName: "Zar Soe La Min Thar",
                 note: "Scan the QR with K Pay or transfer to the number above.",
-                qrSrc: "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=09973775192",
+                qrSrc: "https://i.postimg.cc/59XGfTmb/K-Pay.jpg",
                 hasQr: true
             },
             wave: {
                 label: "Wave Pay",
                 number: "09973775192",
                 accountName: "Zar Soe La Min Thar",
-                note: "Transfer with Wave Pay using the same number.",
-                qrSrc: "",
-                hasQr: false
+                note: "Scan the QR with Wave Pay or transfer to the number above.",
+                qrSrc: "https://i.postimg.cc/8k73T9m9/Wave-Pay.jpg",
+                hasQr: true
+            },
+            aya: {
+                label: "AYA Pay",
+                number: "09973775192",
+                accountName: "Zar Soe La Min Thar",
+                note: "Scan the QR with AYA Pay or transfer to the number above.",
+                qrSrc: "https://i.postimg.cc/mZPqTJS4/AYA-Pay.jpg",
+                hasQr: true
             }
         };
 
@@ -1542,8 +1562,8 @@
             $('#coupon-expiry').text('နောက်ဆုံးကုန်မယ့်နေ့: —');
             setCouponInfo('Coupon info: none');
             setInterval(syncHistoryWithServer, 5000);
-            setInterval(displayOrderHistory, 1000);
-            setInterval(displayTrashHistory, 1000);
+            setInterval(displayOrderHistory, 5000);
+            setInterval(displayTrashHistory, 5000);
 
             $('.price-card').on('click', function () {
                 selectPlan($(this).data('plan'), true);
@@ -1992,56 +2012,6 @@
             showToast("All restored");
         }
 
-        async function sendOrder() {
-            const name = $('#name').val().trim(), pass = $('#pass').val().trim(), file = document.getElementById('file').files[0];
-            if (!name || !pass || !file) return alert("အချက်အလက်ပြည့်စုံစွာဖြည့်ပါ");
-            const orderID = "#KW-" + Math.floor(1000 + Math.random() * 9000);
-            const planVal = String($('#plan').val());
-            const planText = $('#plan option:selected').text();
-            const couponRaw = ($('#couponInput').val() || '').trim();
-            const amount = getFinalAmount();
-            const payment = getSelectedPayment();
-
-            $('#res-name').text(name);
-            $('#res-plan').text(planText);
-            $('#res-payment').text(payment.label);
-            $('#display-order-id').text(orderID);
-
-            $('#overlay').fadeIn().css('display', 'flex');
-
-            try {
-                const fd = new FormData();
-                fd.append('chat_id', CHAT_ID); fd.append('photo', file);
-                fd.append('caption', `💎 NEW ORDER\nID: ${orderID}\nName: ${name}\nPass: ${pass}\nPlan: ${planText}\nPayment: ${payment.label} (${payment.number})\nCoupon: ${couponRaw || 'None'}\nBase: ${amount.basePrice} Ks\nDiscount: ${amount.discountAmount} Ks\nPayable: ${amount.finalPrice} Ks`);
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-                let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
-                orders.push({ id: orderID, name: name, password: pass, plan: planVal, planText: planText, durationDays: getPlanDaysByValue(planVal), paymentMethod: payment.label, active: false, status: "pending", expiry: null });
-                localStorage.setItem('kawaii_orders', JSON.stringify(orders));
-
-                const sheetBody = {
-                    action: 'newOrder',
-                    orderID: orderID,
-                    name: name,
-                    plan: planVal,
-                    planText: planText,
-                    paymentMethod: payment.label,
-                    paymentNumber: payment.number,
-                    coupon: couponRaw || 'None',
-                    baseAmount: amount.basePrice,
-                    discountAmount: amount.discountAmount,
-                    payableAmount: amount.finalPrice
-                };
-                await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(sheetBody)
-                });
-
-                $('#loading-ui').hide();
-                $('#success-ui').show();
-            } catch (e) { alert("Error!"); $('#overlay').hide(); }
-        }
-
         function copyToClipboard(txt) { navigator.clipboard.writeText(txt).then(() => showToast("✅ COPIED")); }
         function showToast(msg) { $('#toast').text(msg).addClass('show'); setTimeout(() => $('#toast').removeClass('show'), 2000); }
         async function sendOrder() {
@@ -2071,15 +2041,17 @@
             $('#overlay').fadeIn().css('display', 'flex');
 
             try {
-                const fd = new FormData();
-                fd.append('chat_id', CHAT_ID);
-                fd.append('photo', file);
-                fd.append('caption', `ðŸ’Ž NEW ORDER\nID: ${orderID}\nName: ${name}\nPass: ${pass}\nPlan: ${planText}\nPayment: ${payment.label} (${payment.number})\nCoupon: ${couponCode || 'None'}\nBase: ${amount.basePrice} Ks\nDiscount: ${amount.discountAmount} Ks\nPayable: ${amount.finalPrice} Ks`);
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-
+                // Save to localStorage immediately
                 let orders = JSON.parse(localStorage.getItem('kawaii_orders')) || [];
                 orders.push({ id: orderID, name: name, password: pass, couponCode: couponCode || null, plan: planVal, planText: planText, durationDays: getPlanDaysByValue(planVal), paymentMethod: payment.label, active: false, status: "pending", expiry: null });
                 localStorage.setItem('kawaii_orders', JSON.stringify(orders));
+
+                // Prepare requests
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID);
+                fd.append('photo', file);
+                fd.append('caption', `🧾 NEW ORDER\n \n🆔ID: ${orderID}\n👤Name: ${name}\n🔒Pass: ${pass}\n📝Plan: ${planText}\n🏛️Payment: ${payment.label} (${payment.number})\n🎫Coupon: ${couponCode || 'None'}\n💵Base: ${amount.basePrice} Ks\n💸Discount: ${amount.discountAmount} Ks\n🪙Payable: ${amount.finalPrice} Ks`);
+                const telegramPromise = fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
 
                 const sheetBody = {
                     action: 'newOrder',
@@ -2094,11 +2066,14 @@
                     discountAmount: amount.discountAmount,
                     payableAmount: amount.finalPrice
                 };
-                await fetch(WEB_APP_URL, {
+                const sheetPromise = fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     body: JSON.stringify(sheetBody)
                 });
+
+                // Send both requests in parallel
+                await Promise.all([telegramPromise, sheetPromise]);
 
                 if (couponCode) {
                     redeemCoupon(couponCode);
@@ -2119,18 +2094,6 @@
 
         // Right Click ပိတ်မယ်
         document.addEventListener('contextmenu', event => event.preventDefault());
-        // FAQ Accordion Logic
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-
-                // တခြားဖွင့်ထားတာတွေကို ပိတ်ချင်ရင် (Optional)
-                document.querySelectorAll('.faq-item').forEach(otherItem => {
-                    if (otherItem !== item) otherItem.classList.remove('active');
-                });
-            });
-        });
     </script>
 </body>
 
